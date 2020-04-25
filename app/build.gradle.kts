@@ -1,0 +1,79 @@
+plugins {
+    id(Plugins.Id.Android.Application)
+    kotlin(Plugins.Id.Kotlin.Android)
+    id(Plugins.Id.Kotlin.AndroidExtensions)
+}
+
+android {
+    compileSdkVersion(Sdk.CompileSdkVersion)
+
+    defaultConfig {
+        minSdkVersion(Sdk.MinSdkVersion)
+        targetSdkVersion(Sdk.TargetSdkVersion)
+
+        applicationId = App.AppId
+        versionCode = appBuildVersion()
+        versionName = appVersionName()
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        getByName("release") {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+
+    lintOptions {
+        isWarningsAsErrors = true
+        isAbortOnError = true
+    }
+}
+
+dependencies {
+    implementation(Libraries.AndroidX.AppCompat)
+    implementation(Libraries.AndroidX.ConstraintLayout)
+    implementation(Libraries.AndroidX.CoreKtx)
+    implementation(Libraries.AndroidX.Lifecycle.LiveData)
+    implementation(Libraries.AndroidX.Lifecycle.ViewModel)
+    implementation(Libraries.AndroidX.RecyclerView)
+    implementation(Libraries.AndroidX.SwipeRefreshLayout)
+
+    implementation(Libraries.Google.Material)
+
+    implementation(Libraries.Koin.Android)
+    implementation(Libraries.Koin.Scope)
+    implementation(Libraries.Koin.ViewModel)
+
+    implementation(Libraries.Kotlin.StdLib)
+    implementation(Libraries.Kotlin.Coroutines.Core)
+    implementation(Libraries.Kotlin.Coroutines.Android)
+
+    implementation(Libraries.OkHttp.OkHttp)
+    implementation(Libraries.OkHttp.AndroidSupport)
+    implementation(Libraries.OkHttp.LoggingInterceptor)
+
+    implementation(Libraries.Picasso.Picasso)
+    implementation(Libraries.Picasso.OkHttpDownloader)
+
+    implementation(Libraries.Retrofit.Retrofit)
+    implementation(Libraries.Retrofit.MoshiConverter)
+
+    implementation(Libraries.Timber)
+
+    // Test
+    testImplementation(TestingLibraries.JUnit)
+
+    // Android test
+    androidTestImplementation(AndroidTestingLibraries.AndroidX.TestExtJUnit)
+    androidTestImplementation(AndroidTestingLibraries.AndroidX.TestRules)
+    androidTestImplementation(AndroidTestingLibraries.EspressoCore)
+}
