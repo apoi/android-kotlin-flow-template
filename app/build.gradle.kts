@@ -22,6 +22,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -44,6 +48,8 @@ dependencies {
     implementation(Libraries.AndroidX.CoreKtx)
     implementation(Libraries.AndroidX.Lifecycle.LiveData)
     implementation(Libraries.AndroidX.Lifecycle.ViewModel)
+    implementation(Libraries.AndroidX.Navigation.Fragment)
+    implementation(Libraries.AndroidX.Navigation.Ui)
     implementation(Libraries.AndroidX.RecyclerView)
     implementation(Libraries.AndroidX.SwipeRefreshLayout)
 

@@ -1,8 +1,8 @@
 package com.example.app.inject
 
-import com.example.app.API_ENDPOINT
 import com.example.app.data.repository.ListRepository
-import com.example.app.features.list.ListViewModel
+import com.example.app.features.home.list.ListViewModel
+import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory
 import com.squareup.moshi.Moshi
@@ -36,7 +36,7 @@ val appModule = module {
         Retrofit.Builder()
             .addCallAdapterFactory(ResultCallAdapterFactory())
             .addConverterFactory(MoshiConverterFactory.create(get()))
-            .baseUrl(API_ENDPOINT)
+            .baseUrl(NetworkConfig.API_ENDPOINT)
             .client(get())
             .build()
     }

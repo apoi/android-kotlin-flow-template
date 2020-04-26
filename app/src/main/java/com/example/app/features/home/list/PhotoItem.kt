@@ -1,4 +1,4 @@
-package com.example.app.features.list
+package com.example.app.features.home.list
 
 import com.example.app.data.pojo.Photo
 import com.example.app.ui.adapter.CommonListItem

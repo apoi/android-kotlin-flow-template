@@ -1,4 +1,4 @@
-package com.example.app.features.list
+package com.example.app.features.home.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

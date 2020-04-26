@@ -1,10 +1,8 @@
-package com.example.app.features.list
+package com.example.app.features.home.list
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,24 +12,19 @@ import com.example.app.features.photo.PhotoActivity
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.CommonAdapter
 import com.example.app.ui.listener.setClickListener
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.list_fragment.*
 import org.koin.android.ext.android.inject
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(R.layout.list_fragment) {
 
     private val viewModel: ListViewModel by inject()
     private val photoAdapter = CommonAdapter<PhotoItem>(PhotoTypeFactory())
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.list_fragment, container, false)
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recycler_view.apply {
+        about_recycler_view.apply {
             adapter = photoAdapter
             layoutManager = LinearLayoutManager(context)
 
@@ -45,6 +38,12 @@ class ListFragment : Fragment() {
             viewLifecycleOwner,
             Observer { photoAdapter.setItems(it) }
         )
+
+        list_fab.setOnClickListener {
+            Snackbar.make(it, "Replace with your own action", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+                .show()
+        }
     }
 
     override fun onResume() {

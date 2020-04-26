@@ -60,6 +60,7 @@ object Versions {
     const val Koin = "2.1.5"
     const val Ktlint = "0.36.0"
     const val Material = "1.1.0"
+    const val Navigation = "2.2.2"
     const val Retrofit = "2.8.1"
     const val Timber = "4.7.1"
 
@@ -79,6 +80,11 @@ object Libraries {
         object Lifecycle {
             const val ViewModel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.AndroidX.Lifecycle}"
             const val LiveData = "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.AndroidX.Lifecycle}"
+        }
+
+        object Navigation {
+            const val Fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.Navigation}"
+            const val Ui = "androidx.navigation:navigation-ui-ktx:${Versions.Navigation}"
         }
 
         const val AppCompat = "androidx.appcompat:appcompat:${Versions.AndroidX.AppCompat}"

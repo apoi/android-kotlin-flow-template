@@ -1,4 +1,4 @@
-package com.example.app.features.list
+package com.example.app.features.home.list
 
 import android.view.View
 import com.example.app.R
