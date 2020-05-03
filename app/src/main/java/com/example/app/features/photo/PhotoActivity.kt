@@ -1,27 +1,21 @@
 package com.example.app.features.photo
 
-import android.app.Activity
 import android.os.Bundle
-import android.view.Window
-import android.view.WindowManager
+import android.view.WindowManager.LayoutParams
+import androidx.appcompat.app.AppCompatActivity
 import com.example.app.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.photo_activity.*
 import org.koin.android.ext.android.inject
 
-const val PHOTO = "photo"
-
-class PhotoActivity : Activity() {
+class PhotoActivity : AppCompatActivity(R.layout.photo_activity) {
 
     private val picasso: Picasso by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
-        setContentView(R.layout.photo_activity)
+        window.setFlags(LayoutParams.FLAG_FULLSCREEN, LayoutParams.FLAG_FULLSCREEN)
         initImageView(intent.getStringExtra(PHOTO) ?: "")
     }
 
@@ -30,5 +24,9 @@ class PhotoActivity : Activity() {
             .centerInside()
             .fit()
             .into(photo_view)
+    }
+
+    companion object {
+        const val PHOTO = "photo"
     }
 }

@@ -8,7 +8,6 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.app.R
 import com.example.app.navigation.setupWithNavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.home_activity.*
 
 class HomeActivity : AppCompatActivity(R.layout.home_activity) {
@@ -38,12 +37,9 @@ class HomeActivity : AppCompatActivity(R.layout.home_activity) {
      * Called on first creation and when restoring state.
      */
     private fun setupBottomNavigationBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.home_bottom_nav)
-        val navGraphIds = listOf(R.navigation.list_nav, R.navigation.about_nav)
-
         // Setup the bottom navigation view with a list of navigation graphs
-        val controller = bottomNavigationView.setupWithNavController(
-            navGraphIds = navGraphIds,
+        val controller = home_bottom_nav.setupWithNavController(
+            navGraphIds = listOf(R.navigation.list_nav, R.navigation.about_nav),
             fragmentManager = supportFragmentManager,
             containerId = R.id.home_nav_container,
             intent = intent

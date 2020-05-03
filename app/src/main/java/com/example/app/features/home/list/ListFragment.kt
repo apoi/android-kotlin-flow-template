@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
-import com.example.app.features.photo.PHOTO
 import com.example.app.features.photo.PhotoActivity
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.CommonAdapter
@@ -19,7 +18,7 @@ import org.koin.android.ext.android.inject
 class ListFragment : Fragment(R.layout.list_fragment) {
 
     private val viewModel: ListViewModel by inject()
-    private val photoAdapter = CommonAdapter<PhotoItem>(PhotoTypeFactory())
+    private val photoAdapter = CommonAdapter<ListItem>(ListTypeFactory())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -52,9 +51,9 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         viewModel.fetchPhotos()
     }
 
-    private fun onItemSelected(photo: PhotoItem) {
+    private fun onItemSelected(photo: ListItem) {
         Intent(context, PhotoActivity::class.java)
-            .apply { putExtra(PHOTO, photo.url) }
+            .apply { putExtra(PhotoActivity.PHOTO, photo.url) }
             .let { requireContext().startActivity(it) }
     }
 }

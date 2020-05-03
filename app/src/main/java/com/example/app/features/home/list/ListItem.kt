@@ -4,7 +4,7 @@ import com.example.app.data.pojo.Photo
 import com.example.app.ui.adapter.CommonListItem
 import com.example.app.ui.adapter.CommonTypeFactory
 
-class PhotoItem(
+class ListItem(
     val id: Int,
     val title: String,
     val url: String,
@@ -20,8 +20,8 @@ class PhotoItem(
     }
 
     companion object {
-        fun from(photo: Photo): PhotoItem {
-            return PhotoItem(photo.id, photo.title, photo.url, photo.thumbnailUrl)
+        fun from(photo: Photo): ListItem {
+            return ListItem(photo.id, photo.title, photo.url, photo.thumbnailUrl)
         }
     }
 }

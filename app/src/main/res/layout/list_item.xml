@@ -8,7 +8,7 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <ImageView
-        android:id="@+id/item_photo"
+        android:id="@+id/list_item_photo"
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,19 +16,19 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/item_title"
+        android:id="@+id/list_item_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_m"
         android:gravity="start"
-        app:layout_constraintBottom_toTopOf="@id/item_description"
+        app:layout_constraintBottom_toTopOf="@id/list_item_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/item_photo"
+        app:layout_constraintStart_toEndOf="@id/list_item_photo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/item_description"
+        android:id="@+id/list_item_description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/spacing_m"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@id/item_photo"
-        app:layout_constraintTop_toBottomOf="@id/item_title" />
+        app:layout_constraintStart_toEndOf="@id/list_item_photo"
+        app:layout_constraintTop_toBottomOf="@id/list_item_title" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

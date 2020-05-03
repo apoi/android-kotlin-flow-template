@@ -17,10 +17,10 @@ class ListViewModel(
     private val dispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
-    private val data = MutableLiveData<List<PhotoItem>>()
+    private val data = MutableLiveData<List<ListItem>>()
     private var fetchJob: Job? = null
 
-    fun getPhotos(): LiveData<List<PhotoItem>> = data
+    fun getPhotos(): LiveData<List<ListItem>> = data
 
     fun fetchPhotos() {
         fetchJob?.apply { if (isActive) cancel() }
@@ -29,7 +29,7 @@ class ListViewModel(
                 .collect {
                     when (it) {
                         is Result.Success -> {
-                            val items = it.value?.map { PhotoItem.from(it) }
+                            val items = it.value?.map { ListItem.from(it) }
                             data.postValue(items)
                         }
                         else -> Timber.e(it.toString())
