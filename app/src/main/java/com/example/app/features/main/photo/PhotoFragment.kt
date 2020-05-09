@@ -3,14 +3,14 @@ package com.example.app.features.main.photo
 import androidx.fragment.app.Fragment
 import com.example.app.R
 import com.example.app.databinding.PhotoFragmentBinding
-import com.example.app.util.viewLifecycle
+import com.example.app.util.viewBinding
 import com.squareup.picasso.Picasso
 import org.koin.android.ext.android.inject
 
 class PhotoFragment : Fragment(R.layout.photo_fragment) {
 
     private val picasso: Picasso by inject()
-    private val binding by viewLifecycle { PhotoFragmentBinding.bind(requireView()) }
+    private val binding by viewBinding(PhotoFragmentBinding::bind)
 
     override fun onResume() {
         super.onResume()

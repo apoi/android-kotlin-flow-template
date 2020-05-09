@@ -16,6 +16,7 @@ import com.example.app.util.viewBinding
 class MainActivity : AppCompatActivity(R.layout.main_activity) {
 
     private var currentNavController: LiveData<NavController>? = null
+
     private val binding by viewBinding(MainActivityBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {

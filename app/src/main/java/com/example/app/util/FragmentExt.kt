@@ -1,11 +1,19 @@
 package com.example.app.util
 
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.viewbinding.ViewBinding
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
+
+/**
+ * Convenience method for creating ViewBinding from Fragment's view with View
+ * lifecycle using `viewLifecycle` extension below.
+ */
+fun <T : ViewBinding> Fragment.viewBinding(bind: (View) -> T) = viewLifecycle { bind(requireView()) }
 
 /**
  * Binds a value to View lifecycle. Value is created with the initialization
@@ -18,7 +26,7 @@ fun <T> Fragment.viewLifecycle(create: () -> T): ReadOnlyProperty<Fragment, T> =
         private var value: T? = null
 
         init {
-            // Observe the view lifecycle of the Fragment
+            // Observe the View lifecycle of the Fragment
             this@viewLifecycle
                 .viewLifecycleOwnerLiveData
                 .observe(

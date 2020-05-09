@@ -14,14 +14,14 @@ import com.example.app.features.main.photo.PhotoFragment
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.CommonAdapter
 import com.example.app.ui.listener.setClickListener
-import com.example.app.util.viewLifecycle
+import com.example.app.util.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
 
 class ListFragment : Fragment(R.layout.list_fragment) {
 
     private val viewModel: ListViewModel by inject()
-    private val binding by viewLifecycle { ListFragmentBinding.bind(requireView()) }
+    private val binding by viewBinding(ListFragmentBinding::bind)
     private val photoAdapter = CommonAdapter<ListItem>(ListTypeFactory())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
