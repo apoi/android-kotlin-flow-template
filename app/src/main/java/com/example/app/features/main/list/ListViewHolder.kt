@@ -1,4 +1,4 @@
-package com.example.app.features.home.list
+package com.example.app.features.main.list
 
 import com.example.app.databinding.ListItemBinding
 import com.example.app.ui.adapter.CommonViewHolder

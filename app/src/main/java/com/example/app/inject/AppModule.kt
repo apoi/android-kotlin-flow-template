@@ -1,7 +1,7 @@
 package com.example.app.inject
 
 import com.example.app.data.repository.ListRepository
-import com.example.app.features.home.list.ListViewModel
+import com.example.app.features.main.list.ListViewModel
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory

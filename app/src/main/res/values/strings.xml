@@ -9,6 +9,9 @@
     <string name="list_title">List</string>
     <string name="list_description">List</string>
 
+    <string name="photo_title">Photo</string>
+    <string name="photo_description">Photo</string>
+
     <string name="about_title">About</string>
     <string name="about_description">About</string>
 

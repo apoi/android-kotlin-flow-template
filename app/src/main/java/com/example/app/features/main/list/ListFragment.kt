@@ -1,14 +1,16 @@
-package com.example.app.features.home.list
+package com.example.app.features.main.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ListFragmentBinding
-import com.example.app.features.photo.PhotoActivity
+import com.example.app.features.main.MainActivity
+import com.example.app.features.main.photo.PhotoFragment
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.CommonAdapter
 import com.example.app.ui.listener.setClickListener
@@ -53,8 +55,13 @@ class ListFragment : Fragment(R.layout.list_fragment) {
     }
 
     private fun onItemSelected(photo: ListItem) {
-        Intent(context, PhotoActivity::class.java)
-            .apply { putExtra(PhotoActivity.PHOTO, photo.url) }
-            .let { requireContext().startActivity(it) }
+        findNavController()
+            .navigate(
+                R.id.list_to_photo,
+                bundleOf(
+                    PhotoFragment.PHOTO to photo.url,
+                    MainActivity.FULLSCREEN to true
+                )
+            )
     }
 }

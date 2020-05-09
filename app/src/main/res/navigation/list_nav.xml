@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
@@ -8,8 +7,20 @@
 
     <fragment
         android:id="@+id/list_fragment"
-        android:name="com.example.app.features.home.list.ListFragment"
+        android:name="com.example.app.features.main.list.ListFragment"
         android:label="@string/list_title"
-        tools:layout="@layout/list_fragment" />
+        tools:layout="@layout/list_fragment">
+
+        <action
+            android:id="@+id/list_to_photo"
+            app:destination="@id/photo_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/photo_fragment"
+        android:name="com.example.app.features.main.photo.PhotoFragment"
+        android:label="@string/photo_title"
+        tools:layout="@layout/photo_activity" />
 
 </navigation>
