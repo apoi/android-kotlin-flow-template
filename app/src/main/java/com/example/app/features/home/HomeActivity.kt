@@ -7,17 +7,19 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.app.R
+import com.example.app.databinding.HomeActivityBinding
 import com.example.app.navigation.setupWithNavController
-import kotlinx.android.synthetic.main.home_activity.*
+import com.example.app.util.viewBinding
 
 class HomeActivity : AppCompatActivity(R.layout.home_activity) {
 
     private var currentNavController: LiveData<NavController>? = null
+    private val binding by viewBinding(HomeActivityBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setSupportActionBar(home_toolbar)
+        setSupportActionBar(binding.homeToolbar)
 
         if (savedInstanceState == null) {
             setupBottomNavigationBar()
@@ -38,7 +40,7 @@ class HomeActivity : AppCompatActivity(R.layout.home_activity) {
      */
     private fun setupBottomNavigationBar() {
         // Setup the bottom navigation view with a list of navigation graphs
-        val controller = home_bottom_nav.setupWithNavController(
+        val controller = binding.homeBottomNav.setupWithNavController(
             navGraphIds = listOf(R.navigation.list_nav, R.navigation.about_nav),
             fragmentManager = supportFragmentManager,
             containerId = R.id.home_nav_container,

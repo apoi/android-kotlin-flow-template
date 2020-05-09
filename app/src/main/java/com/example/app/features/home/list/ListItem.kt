@@ -4,7 +4,7 @@ import com.example.app.data.pojo.Photo
 import com.example.app.ui.adapter.CommonListItem
 import com.example.app.ui.adapter.CommonTypeFactory
 
-class ListItem(
+data class ListItem(
     val id: Int,
     val title: String,
     val url: String,

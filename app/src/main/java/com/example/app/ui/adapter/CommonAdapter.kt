@@ -1,6 +1,5 @@
 package com.example.app.ui.adapter
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
@@ -40,8 +39,7 @@ class CommonAdapter<T : CommonListItem>(
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder<T> {
-        val view = LayoutInflater.from(parent.context).inflate(viewType, parent, false)
-        return typeFactory.createViewHolder(view, viewType) as CommonViewHolder<T>
+        return typeFactory.createViewHolder(viewType, parent) as CommonViewHolder<T>
     }
 
     override fun onBindViewHolder(holder: CommonViewHolder<T>, position: Int) {

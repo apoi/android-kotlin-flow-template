@@ -1,10 +1,19 @@
 package com.example.app.ui.adapter
 
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.viewbinding.ViewBinding
 
-interface CommonTypeFactory {
+abstract class CommonTypeFactory {
 
-    fun type(item: CommonListItem): Int
+    abstract fun type(item: CommonListItem): Int
 
-    fun createViewHolder(parent: View, type: Int): CommonViewHolder<*>
+    abstract fun createViewHolder(type: Int, parent: ViewGroup): CommonViewHolder<*>
+
+    protected fun <T : ViewBinding> createBinding(
+        creator: (inflater: LayoutInflater, root: ViewGroup, attachToRoot: Boolean) -> T,
+        parent: ViewGroup
+    ): T {
+        return creator(LayoutInflater.from(parent.context), parent, false)
+    }
 }

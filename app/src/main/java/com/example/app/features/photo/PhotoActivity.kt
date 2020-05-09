@@ -4,13 +4,15 @@ import android.os.Bundle
 import android.view.WindowManager.LayoutParams
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app.R
+import com.example.app.databinding.PhotoActivityBinding
+import com.example.app.util.viewBinding
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.photo_activity.*
 import org.koin.android.ext.android.inject
 
 class PhotoActivity : AppCompatActivity(R.layout.photo_activity) {
 
     private val picasso: Picasso by inject()
+    private val binding by viewBinding(PhotoActivityBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,7 @@ class PhotoActivity : AppCompatActivity(R.layout.photo_activity) {
         picasso.load(source)
             .centerInside()
             .fit()
-            .into(photo_view)
+            .into(binding.photoView)
     }
 
     companion object {

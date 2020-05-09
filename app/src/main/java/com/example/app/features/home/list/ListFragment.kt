@@ -7,23 +7,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
+import com.example.app.databinding.ListFragmentBinding
 import com.example.app.features.photo.PhotoActivity
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.CommonAdapter
 import com.example.app.ui.listener.setClickListener
+import com.example.app.util.viewLifecycle
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.list_fragment.*
 import org.koin.android.ext.android.inject
 
 class ListFragment : Fragment(R.layout.list_fragment) {
 
     private val viewModel: ListViewModel by inject()
+    private val binding by viewLifecycle { ListFragmentBinding.bind(requireView()) }
     private val photoAdapter = CommonAdapter<ListItem>(ListTypeFactory())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        about_recycler_view.apply {
+        binding.aboutRecyclerView.apply {
             adapter = photoAdapter
             layoutManager = LinearLayoutManager(context)
 
@@ -38,7 +40,7 @@ class ListFragment : Fragment(R.layout.list_fragment) {
             Observer { photoAdapter.setItems(it) }
         )
 
-        list_fab.setOnClickListener {
+        binding.listFab.setOnClickListener {
             Snackbar.make(it, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show()
@@ -47,7 +49,6 @@ class ListFragment : Fragment(R.layout.list_fragment) {
 
     override fun onResume() {
         super.onResume()
-
         viewModel.fetchPhotos()
     }
 

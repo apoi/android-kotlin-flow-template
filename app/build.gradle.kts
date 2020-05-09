@@ -26,6 +26,10 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
+    viewBinding {
+        isEnabled = true
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -46,6 +50,7 @@ dependencies {
     implementation(Libraries.AndroidX.AppCompat)
     implementation(Libraries.AndroidX.ConstraintLayout)
     implementation(Libraries.AndroidX.CoreKtx)
+    implementation(Libraries.AndroidX.Lifecycle.Common)
     implementation(Libraries.AndroidX.Lifecycle.LiveData)
     implementation(Libraries.AndroidX.Lifecycle.ViewModel)
     implementation(Libraries.AndroidX.Navigation.Fragment)
