@@ -3,6 +3,7 @@ package com.example.app.util
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle.State.INITIALIZED
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.viewbinding.ViewBinding
@@ -52,7 +53,13 @@ fun <T> Fragment.viewLifecycle(create: () -> T): ReadOnlyProperty<Fragment, T> =
             thisRef: Fragment,
             property: KProperty<*>
         ): T {
-            return value ?: create().also {
+            value?.let { return@getValue it }
+
+            if (!lifecycle.currentState.isAtLeast(INITIALIZED)) {
+                error("View has already been destroyed")
+            }
+
+            return create().also {
                 value = it
             }
         }

@@ -1,6 +1,11 @@
 package com.example.app.inject
 
-import com.example.app.data.repository.ListRepository
+import com.example.app.data.pojo.ItemList
+import com.example.app.data.pojo.Photo
+import com.example.app.data.store.StoreCore
+import com.example.app.data.store.core.MemoryStoreCore
+import com.example.app.features.main.list.ListRepository
+import com.example.app.features.main.list.ListStore
 import com.example.app.features.main.list.ListViewModel
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
@@ -52,7 +57,8 @@ val appModule = module {
             .build()
     }
 
-    single { ListRepository(get()) }
+    factory { ListStore() }
+    factory { ListRepository(get(), get(), get()) }
 
     factory { Dispatchers.IO }
 

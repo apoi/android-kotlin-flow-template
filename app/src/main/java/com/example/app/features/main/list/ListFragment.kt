@@ -49,11 +49,6 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchPhotos()
-    }
-
     private fun onItemSelected(photo: ListItem) {
         findNavController()
             .navigate(

@@ -54,7 +54,7 @@ object Versions {
 
     object Kotlin {
         const val Kotlin = Plugin.Kotlin
-        const val Coroutines = "1.3.5"
+        const val Coroutines = "1.3.6"
     }
 
     const val Koin = "2.1.5"
@@ -62,6 +62,7 @@ object Versions {
     const val Material = "1.1.0"
     const val Navigation = "2.2.2"
     const val Retrofit = "2.8.1"
+    const val ThreeTenABP = "1.2.4"
     const val Timber = "4.7.1"
 
     object Testing {
@@ -133,6 +134,7 @@ object Libraries {
         const val OkHttpDownloader = "com.jakewharton.picasso:picasso2-okhttp3-downloader:${Versions.Picasso.OkHttpDownloader}"
     }
 
+    const val ThreeTenABP = "com.jakewharton.threetenabp:threetenabp:${Versions.ThreeTenABP}"
     const val Timber = "com.jakewharton.timber:timber:${Versions.Timber}"
 }
 

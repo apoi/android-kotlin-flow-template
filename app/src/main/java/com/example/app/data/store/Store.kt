@@ -2,9 +2,13 @@ package com.example.app.data.store
 
 import kotlinx.coroutines.flow.Flow
 
-interface Store<T, U> {
+interface Store<K, V, R> {
 
-    fun get(key: T): Flow<U>
+    suspend fun get(key: K): R
 
-    suspend fun put(key: T, value: U)
+    fun getStream(key: K): Flow<V>
+
+    suspend fun put(value: V): Boolean
+
+    suspend fun delete(key: K): Boolean
 }

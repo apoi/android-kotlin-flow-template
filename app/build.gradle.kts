@@ -30,6 +30,10 @@ android {
         isEnabled = true
     }
 
+    androidExtensions {
+        features = setOf("parcelize")
+    }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
@@ -78,6 +82,7 @@ dependencies {
     implementation(Libraries.Retrofit.Retrofit)
     implementation(Libraries.Retrofit.MoshiConverter)
 
+    implementation(Libraries.ThreeTenABP)
     implementation(Libraries.Timber)
 
     // Test
