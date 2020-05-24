@@ -27,8 +27,8 @@ open class ItemListStore<IndexKey, ValueKey, Value : Any>(
 
     override fun getStream(): Flow<List<Value>> {
         return indexCore.getStream(indexKey)
-            .map { it.values }
-            .map { it.mapNotNull { valueCore.get(it) } }
+            .map { index -> index.values }
+            .map { keys -> keys.mapNotNull { key -> valueCore.get(key) } }
     }
 
     /**

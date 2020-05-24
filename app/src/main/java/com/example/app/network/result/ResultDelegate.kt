@@ -1,12 +1,11 @@
 package com.example.app.network.result
 
 import com.example.app.network.CallDelegate
-import org.threeten.bp.ZonedDateTime
-import java.io.IOException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.HttpException
 import retrofit2.Response
+import java.io.IOException
 
 class ResultDelegate<T>(proxy: Call<T>) : CallDelegate<T, Result<T>>(proxy) {
 
@@ -15,7 +14,7 @@ class ResultDelegate<T>(proxy: Call<T>) : CallDelegate<T, Result<T>>(proxy) {
         @Suppress("MagicNumber")
         override fun onResponse(call: Call<T>, response: Response<T>) {
             val result = when (val code = response.code()) {
-                in 200 until 300 -> Result.Success(response.body(), ZonedDateTime.now())
+                in 200 until 300 -> Result.Success(response.body())
                 else -> Result.HttpError(code, response.message())
             }
 

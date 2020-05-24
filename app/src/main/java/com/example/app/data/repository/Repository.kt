@@ -1,40 +1,69 @@
 package com.example.app.data.repository
 
+import com.example.app.data.state.State
 import com.example.app.network.result.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-abstract class Repository<T> {
+/**
+ * Repository binds [Store] and [Api] together to a data source that handles
+ * data fetching and persisting.
+ */
+abstract class Repository<K, V> {
 
-    fun get() = flow {
-        emit(State.Loading)
-        emitAll(getLocalStream())
+    /**
+     * Returns the current state without fetching.
+     */
+    suspend fun get(key: K): State<V> {
+        return getLocal(key)
+            ?.let { State.Success(it) }
+            ?: State.Empty
     }
 
-    fun fetch() = flow {
-        emit(State.Loading)
-        emit(State.Success(get()))
+    /**
+     * Returns a stream of data with fetching if current value is invalid.
+     */
+    fun getStream(key: K, validator: Validator<V> = Accept()): Flow<State<V>> {
+        return flow {
+            emit(State.Loading)
 
-        when (val response = fetchRemote()) {
-            is Result.Success -> response.value?.let { persist(it) }
-            is Result.HttpError -> emit(State.Error(response.error))
-            is Result.NetworkError -> emit(State.Error(response.error))
-            is Result.UnknownError -> emit(State.Error(response.error))
+            // Invalid value triggers fetch. It must not trigger clearing of the
+            // value as the value may still be valid for another consumer with
+            // a different validator.
+            val isValid = getLocal(key)?.let { validator.validate(it) } == true
+
+            if (!isValid) {
+                when (val response = fetchRemote(key)) {
+                    is Result.Success -> {
+                        // Empty states don't go through persistence layer
+                        if (response.value != null) persist(response.value)
+                        else emit(State.Empty)
+                    }
+                    // State can be expanded for more detailed error types
+                    is Result.HttpError -> emit(State.Error(response.error))
+                    is Result.NetworkError -> emit(State.Error(response.error))
+                    is Result.UnknownError -> emit(State.Error(response.error))
+                }
+            }
+
+            // Emit current and future values. The values need to be still validated
+            // as otherwise this may emit the existing value in case of failed fetch.
+            emitAll(
+                getLocalStream(key)
+                    .filter { validator.validate(it) }
+                    .map { State.Success(it) }
+            )
         }
-
-        // Retrieve posts from persistence storage and emit
-        emitAll(getLocalStream().map {
-            State.Success(it)
-        })
     }
 
-    protected abstract suspend fun persist(response: T)
+    protected abstract suspend fun persist(value: V)
 
-    protected abstract suspend fun getLocal(): T
+    protected abstract suspend fun getLocal(key: K): V?
 
-    protected abstract fun getLocalStream(): Flow<T>
+    protected abstract fun getLocalStream(key: K): Flow<V>
 
-    protected abstract suspend fun fetchRemote(): Result<T>
+    protected abstract suspend fun fetchRemote(key: K): Result<V>
 }

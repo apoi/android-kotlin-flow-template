@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
+import com.example.app.data.state.State
 import com.example.app.databinding.ListFragmentBinding
 import com.example.app.features.main.MainActivity
 import com.example.app.features.main.photo.PhotoFragment
@@ -17,6 +18,7 @@ import com.example.app.ui.listener.setClickListener
 import com.example.app.util.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import org.koin.android.ext.android.inject
+import timber.log.Timber
 
 class ListFragment : Fragment(R.layout.list_fragment) {
 
@@ -39,7 +41,14 @@ class ListFragment : Fragment(R.layout.list_fragment) {
 
         viewModel.getPhotos().observe(
             viewLifecycleOwner,
-            Observer { photoAdapter.setItems(it) }
+            Observer {
+                Timber.w("Next value: $it")
+                when (it) {
+                    State.Loading -> Unit
+                    is State.Success -> photoAdapter.setItems(it.value)
+                    is State.Error -> Unit
+                }
+            }
         )
 
         binding.listFab.setOnClickListener {

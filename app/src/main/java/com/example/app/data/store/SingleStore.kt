@@ -3,7 +3,7 @@ package com.example.app.data.store
 import kotlinx.coroutines.flow.Flow
 
 /**
- * Store for single item. Useful for lists with a fixed key.
+ * Store for a single item. Useful for representing lists of values.
  */
 interface SingleStore<V, R> {
 

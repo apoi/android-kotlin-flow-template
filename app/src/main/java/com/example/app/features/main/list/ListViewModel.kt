@@ -1,26 +1,26 @@
 package com.example.app.features.main.list
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.app.data.pojo.Photo
-import com.example.app.network.result.Result
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import com.example.app.data.state.State
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 
 class ListViewModel(
-    private val repository: ListRepository,
-    private val dispatcher: CoroutineDispatcher
+    private val repository: ListRepository
 ) : ViewModel() {
 
-    fun getPhotos(): LiveData<List<ListItem>> {
-        return repository.getPhotos()
-            .map { it.map { ListItem.from(it) } }
+    fun getPhotos(): LiveData<State<List<ListItem>>> {
+        return repository.getStream("")
+            .map {
+                when (it) {
+                    State.Loading -> State.Loading
+                    State.Empty -> State.Empty
+                    is State.Success -> State.Success(it.value.map(ListItem.Companion::from))
+                    is State.Error -> State.Error(it.error)
+                }
+            }
             .asLiveData(viewModelScope.coroutineContext)
     }
 }

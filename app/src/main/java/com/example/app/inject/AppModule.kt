@@ -58,9 +58,9 @@ val appModule = module {
     }
 
     factory { ListStore() }
-    factory { ListRepository(get(), get(), get()) }
+    factory { ListRepository(get(), get()) }
 
     factory { Dispatchers.IO }
 
-    viewModel { ListViewModel(get(), get()) }
+    viewModel { ListViewModel(get()) }
 }
