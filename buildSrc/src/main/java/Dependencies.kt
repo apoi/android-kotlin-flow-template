@@ -26,24 +26,24 @@ object Plugins {
 
 object Versions {
     object Plugin {
-        const val Detekt = "1.8.0"
-        const val Gradle = "3.6.3"
+        const val Detekt = "1.11.0"
+        const val Gradle = "4.0.1"
         const val Kotlin = "1.3.72"
-        const val Ktlint = "9.2.1"
-        const val Version = "0.28.0"
+        const val Ktlint = "9.3.0"
+        const val Version = "0.29.0"
     }
 
     object AndroidX {
-        const val AppCompat = "1.1.0"
+        const val AppCompat = "1.2.0"
         const val ConstraintLayout = "1.1.3"
-        const val CoreKt = "1.2.0"
+        const val CoreKt = "1.3.1"
         const val Lifecycle = "2.2.0"
         const val RecyclerView = "1.1.0"
-        const val SwipeRefreshLayout = "1.0.0"
+        const val SwipeRefreshLayout = "1.1.0"
     }
 
     object OkHttp {
-        const val OkHttp = "4.5.0"
+        const val OkHttp = "4.8.1"
         const val AndroidSupport = "3.13.1"
     }
 
@@ -54,14 +54,14 @@ object Versions {
 
     object Kotlin {
         const val Kotlin = Plugin.Kotlin
-        const val Coroutines = "1.3.6"
+        const val Coroutines = "1.3.8"
     }
 
-    const val Koin = "2.1.5"
-    const val Ktlint = "0.36.0"
-    const val Material = "1.1.0"
-    const val Navigation = "2.2.2"
-    const val Retrofit = "2.8.1"
+    const val Koin = "2.1.6"
+    const val Ktlint = "0.37.2"
+    const val Material = "1.2.0"
+    const val Navigation = "2.3.0"
+    const val Retrofit = "2.9.0"
     const val ThreeTenABP = "1.2.4"
     const val Timber = "4.7.1"
 
