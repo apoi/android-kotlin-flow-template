@@ -1,9 +1,5 @@
 package com.example.app.inject
 
-import com.example.app.data.pojo.ItemList
-import com.example.app.data.pojo.Photo
-import com.example.app.data.store.StoreCore
-import com.example.app.data.store.core.MemoryStoreCore
 import com.example.app.features.main.list.ListRepository
 import com.example.app.features.main.list.ListStore
 import com.example.app.features.main.list.ListViewModel
@@ -47,8 +43,7 @@ val appModule = module {
     }
 
     single {
-        get<Retrofit>()
-            .create(PhotoApi::class.java)
+        get<Retrofit>().create(PhotoApi::class.java)
     }
 
     single {

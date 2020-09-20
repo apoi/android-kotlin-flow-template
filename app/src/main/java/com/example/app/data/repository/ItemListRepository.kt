@@ -26,6 +26,6 @@ open class ItemListRepository<IndexKey, ValueKey, Value : Any>(
     }
 
     override suspend fun fetchRemote(key: IndexKey): Result<List<Value>> {
-        return api.get()
+        return api.fetch()
     }
 }

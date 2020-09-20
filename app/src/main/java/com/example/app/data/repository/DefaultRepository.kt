@@ -23,6 +23,6 @@ open class DefaultRepository<K, V>(
     }
 
     override suspend fun fetchRemote(key: K): Result<V> {
-        return api.get(key)
+        return api.fetch(key)
     }
 }

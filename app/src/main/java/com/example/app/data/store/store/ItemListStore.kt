@@ -28,7 +28,7 @@ open class ItemListStore<IndexKey, ValueKey, Value : Any>(
     override fun getStream(): Flow<List<Value>> {
         return indexCore.getStream(indexKey)
             .map { index -> index.values }
-            .map { keys -> keys.mapNotNull { key -> valueCore.get(key) } }
+            .map { keys -> keys.mapNotNull { valueCore.get(it) } }
     }
 
     /**
@@ -39,7 +39,7 @@ open class ItemListStore<IndexKey, ValueKey, Value : Any>(
     override suspend fun put(values: List<Value>): Boolean {
         // Put values first in case there's a listener for the index. This way values
         // already exist for any listeners to query.
-        val valueChanged = values.any { value -> valueCore.put(keyForValue(value), value) }
+        val valueChanged = values.map { value -> valueCore.put(keyForValue(value), value) }.any()
         val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(keyForValue)))
 
         return valueChanged || indexChanged

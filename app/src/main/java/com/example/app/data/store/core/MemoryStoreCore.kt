@@ -3,6 +3,7 @@ package com.example.app.data.store.core
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.StoreCore.Companion.takeNew
 import kotlinx.coroutines.channels.BroadcastChannel
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
 import java.util.concurrent.ConcurrentHashMap
@@ -18,17 +19,17 @@ open class MemoryStoreCore<K, V>(
     private val cache = ConcurrentHashMap<K, V>()
 
     // Flow of values from the
-    private val stream = BroadcastChannel<V>(1)
+    private val stream = ConflatedBroadcastChannel<V>()
 
     // Listeners for values
-    private val listeners = ConcurrentHashMap<K, BroadcastChannel<V>>()
+    private val listeners = ConcurrentHashMap<K, ConflatedBroadcastChannel<V>>()
 
     override suspend fun get(key: K): V? {
         return cache[key]
     }
 
     override fun getStream(key: K): Flow<V> {
-        return getOrCreateListener(key).asFlow()
+        return getOrCreateChannel(key).asFlow()
     }
 
     override suspend fun getAll(): List<V> {
@@ -58,12 +59,16 @@ open class MemoryStoreCore<K, V>(
         return cache.remove(key) != null
     }
 
-    private fun getOrCreateListener(key: K): BroadcastChannel<V> {
+    private fun getOrCreateChannel(key: K): BroadcastChannel<V> {
         // Channel already exists, just return
-        listeners[key]?.let { return@getOrCreateListener it }
+        listeners[key]?.let {
+            return@getOrCreateChannel it
+        }
 
-        // Doesn't exist, create new channel
-        listeners.putIfAbsent(key, BroadcastChannel(1))
-        return listeners[key]!!
+        // Doesn't exist, create new channel and init with content
+        return ConflatedBroadcastChannel<V>().also { channel ->
+            cache[key]?.let { channel.offer(it) }
+            listeners.putIfAbsent(key, channel)
+        }
     }
 }

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
@@ -17,8 +17,8 @@ import com.example.app.ui.adapter.CommonAdapter
 import com.example.app.ui.listener.setClickListener
 import com.example.app.util.viewBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 class ListFragment : Fragment(R.layout.list_fragment) {
 
@@ -39,17 +39,16 @@ class ListFragment : Fragment(R.layout.list_fragment) {
             setClickListener(::onItemSelected)
         }
 
-        viewModel.getPhotos().observe(
-            viewLifecycleOwner,
-            Observer {
-                Timber.w("Next value: $it")
-                when (it) {
-                    State.Loading -> Unit
-                    is State.Success -> photoAdapter.setItems(it.value)
-                    is State.Error -> Unit
+        lifecycleScope.launchWhenStarted {
+            viewModel.getPhotos()
+                .collect {
+                    when (it) {
+                        State.Loading -> Unit
+                        is State.Success -> { photoAdapter.setItems(it.value) }
+                        is State.Error -> Unit
+                    }
                 }
-            }
-        )
+        }
 
         binding.listFab.setOnClickListener {
             Snackbar.make(it, "Replace with your own action", Snackbar.LENGTH_LONG)
