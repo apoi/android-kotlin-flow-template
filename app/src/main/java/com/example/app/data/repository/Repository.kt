@@ -38,9 +38,13 @@ abstract class Repository<K, V> {
             if (!isValid) {
                 when (val response = fetchRemote(key)) {
                     is Result.Success -> {
-                        // Empty states don't go through persistence layer
-                        if (response.value != null) persist(response.value)
-                        else emit(State.Empty)
+                        if (response.value != null) {
+                            // Response is persisted to be emitted later
+                            persist(response.value)
+                        } else {
+                            // Empty states don't go through persistence layer
+                            emit(State.Empty)
+                        }
                     }
                     // State can be expanded for more detailed error types
                     is Result.HttpError -> emit(State.Error(response.error))

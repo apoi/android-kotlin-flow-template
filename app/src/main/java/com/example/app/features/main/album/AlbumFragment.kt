@@ -1,30 +1,32 @@
-package com.example.app.features.main.list
+package com.example.app.features.main.album
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.data.state.State
-import com.example.app.databinding.ListFragmentBinding
+import com.example.app.databinding.AlbumFragmentBinding
 import com.example.app.features.main.MainActivity
-import com.example.app.features.main.photo.PhotoFragment
+import com.example.app.features.main.album.adapter.AlbumItemModel
+import com.example.app.features.main.album.adapter.AlbumTypeFactory
+import com.example.app.features.main.details.DetailsFragment
 import com.example.app.ui.DividerDecoration
-import com.example.app.ui.adapter.CommonAdapter
+import com.example.app.ui.adapter.ListAdapter
+import com.example.app.ui.base.BaseFragment
 import com.example.app.ui.listener.setClickListener
 import com.example.app.util.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
-class ListFragment : Fragment(R.layout.list_fragment) {
+class AlbumFragment : BaseFragment(R.layout.album_fragment) {
 
-    private val viewModel: ListViewModel by inject()
-    private val binding by viewBinding(ListFragmentBinding::bind)
-    private val photoAdapter = CommonAdapter<ListItem>(ListTypeFactory())
+    private val viewModel: AlbumViewModel by inject()
+    private val binding by viewBinding(AlbumFragmentBinding::bind)
+    private val photoAdapter = ListAdapter<AlbumItemModel>(AlbumTypeFactory())
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -57,12 +59,12 @@ class ListFragment : Fragment(R.layout.list_fragment) {
         }
     }
 
-    private fun onItemSelected(photo: ListItem) {
+    private fun onItemSelected(photo: AlbumItemModel) {
         findNavController()
             .navigate(
                 R.id.list_to_photo,
                 bundleOf(
-                    PhotoFragment.PHOTO to photo.url,
+                    DetailsFragment.ID to photo.url,
                     MainActivity.FULLSCREEN to true
                 )
             )

@@ -7,20 +7,20 @@
 
     <fragment
         android:id="@+id/list_fragment"
-        android:name="com.example.app.features.main.list.ListFragment"
-        android:label="@string/list_title"
-        tools:layout="@layout/list_fragment">
+        android:name="com.example.app.features.main.album.AlbumFragment"
+        android:label="@string/album_title"
+        tools:layout="@layout/album_fragment">
 
         <action
             android:id="@+id/list_to_photo"
-            app:destination="@id/photo_fragment" />
+            app:destination="@id/details_fragment" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/photo_fragment"
-        android:name="com.example.app.features.main.photo.PhotoFragment"
-        android:label="@string/photo_title"
-        tools:layout="@layout/photo_activity" />
+        android:id="@+id/details_fragment"
+        android:name="com.example.app.features.main.details.DetailsFragment"
+        android:label="@string/details_title"
+        tools:layout="@layout/details_fragment" />
 
 </navigation>

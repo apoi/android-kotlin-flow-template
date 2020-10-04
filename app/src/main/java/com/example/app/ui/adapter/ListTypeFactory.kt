@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
 
-abstract class CommonTypeFactory {
+abstract class ListTypeFactory {
 
-    abstract fun type(item: CommonListItem): Int
+    abstract fun type(item: ListItem): Int
 
-    abstract fun createViewHolder(type: Int, parent: ViewGroup): CommonViewHolder<*>
+    abstract fun createViewHolder(type: Int, parent: ViewGroup): ListViewHolder<*>
 
     protected fun <T : ViewBinding> createBinding(
         creator: (inflater: LayoutInflater, root: ViewGroup, attachToRoot: Boolean) -> T,

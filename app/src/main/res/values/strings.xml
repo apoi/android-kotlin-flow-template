@@ -6,11 +6,11 @@
     <string name="home_title">Home</string>
     <string name="home_description">Home</string>
 
-    <string name="list_title">List</string>
-    <string name="list_description">List</string>
+    <string name="album_title">Album</string>
+    <string name="album_description">Album</string>
 
-    <string name="photo_title">Photo</string>
-    <string name="photo_description">Photo</string>
+    <string name="details_title">Details</string>
+    <string name="details_description">Details</string>
 
     <string name="about_title">About</string>
     <string name="about_description">About</string>

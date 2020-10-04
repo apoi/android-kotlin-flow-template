@@ -1,8 +1,9 @@
 package com.example.app.inject
 
-import com.example.app.features.main.list.ListRepository
-import com.example.app.features.main.list.ListStore
-import com.example.app.features.main.list.ListViewModel
+import com.example.app.features.main.album.AlbumViewModel
+import com.example.app.features.main.album.store.AlbumRepository
+import com.example.app.features.main.album.store.AlbumStore
+import com.example.app.features.main.details.DetailsViewModel
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory
@@ -52,10 +53,11 @@ val appModule = module {
             .build()
     }
 
-    factory { ListStore() }
-    factory { ListRepository(get(), get()) }
+    factory { AlbumStore() }
+    factory { AlbumRepository(get(), get()) }
 
     factory { Dispatchers.IO }
 
-    viewModel { ListViewModel(get()) }
+    viewModel { AlbumViewModel(get()) }
+    viewModel { (id: Int) -> DetailsViewModel(id) }
 }

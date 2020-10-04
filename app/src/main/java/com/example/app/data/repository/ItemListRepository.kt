@@ -5,27 +5,30 @@ import com.example.app.data.store.store.ItemListStore
 import com.example.app.network.result.Result
 import kotlinx.coroutines.flow.Flow
 
-open class ItemListRepository<IndexKey, ValueKey, Value : Any>(
-    private val store: ItemListStore<IndexKey, ValueKey, Value>,
-    private val api: SingleApi<List<Value>>
-) : Repository<IndexKey, List<Value>>() {
+/**
+ * ItemListRepository handles lists of items.
+ */
+open class ItemListRepository<I, K, V : Any>(
+    private val store: ItemListStore<I, K, V>,
+    private val api: SingleApi<List<V>>
+) : Repository<I, List<V>>() {
 
-    override suspend fun persist(value: List<Value>) {
+    override suspend fun persist(value: List<V>) {
         store.put(value)
     }
 
-    override suspend fun getLocal(key: IndexKey): List<Value>? {
+    override suspend fun getLocal(key: I): List<V>? {
         return store.get().let {
             if (it.isEmpty()) null
             else it
         }
     }
 
-    override fun getLocalStream(key: IndexKey): Flow<List<Value>> {
+    override fun getLocalStream(key: I): Flow<List<V>> {
         return store.getStream()
     }
 
-    override suspend fun fetchRemote(key: IndexKey): Result<List<Value>> {
+    override suspend fun fetchRemote(key: I): Result<List<V>> {
         return api.fetch()
     }
 }

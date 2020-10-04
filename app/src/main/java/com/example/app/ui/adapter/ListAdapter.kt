@@ -3,9 +3,9 @@ package com.example.app.ui.adapter
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class CommonAdapter<T : CommonListItem>(
-    private val typeFactory: CommonTypeFactory
-) : RecyclerView.Adapter<CommonViewHolder<T>>() {
+class ListAdapter<T : ListItem>(
+    private val typeFactory: ListTypeFactory
+) : RecyclerView.Adapter<ListViewHolder<T>>() {
 
     init {
         setHasStableIds(true)
@@ -38,11 +38,11 @@ class CommonAdapter<T : CommonListItem>(
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommonViewHolder<T> {
-        return typeFactory.createViewHolder(viewType, parent) as CommonViewHolder<T>
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder<T> {
+        return typeFactory.createViewHolder(viewType, parent) as ListViewHolder<T>
     }
 
-    override fun onBindViewHolder(holder: CommonViewHolder<T>, position: Int) {
+    override fun onBindViewHolder(holder: ListViewHolder<T>, position: Int) {
         holder.bind(itemAt(position))
     }
 }

@@ -10,22 +10,24 @@ import kotlinx.coroutines.flow.map
  * Store for lists of items. Keeps index of the items in one core,
  * and items themselves in another core. This allows each item to
  * exist in multiple indexes and be queried independently.
+ *
+ * @param
  */
-open class ItemListStore<IndexKey, ValueKey, Value : Any>(
-    private val indexKey: IndexKey,
-    private val keyForValue: (Value) -> ValueKey,
-    private val indexCore: StoreCore<IndexKey, ItemList<IndexKey, ValueKey>>,
-    private val valueCore: StoreCore<ValueKey, Value>
-) : SingleStore<List<Value>, List<Value>> {
+open class ItemListStore<I, K, V : Any>(
+    private val indexKey: I,
+    private val keyForValue: (V) -> K,
+    private val indexCore: StoreCore<I, ItemList<I, K>>,
+    private val valueCore: StoreCore<K, V>
+) : SingleStore<List<V>, List<V>> {
 
-    override suspend fun get(): List<Value> {
+    override suspend fun get(): List<V> {
         return indexCore.get(indexKey)
             ?.values
             ?.mapNotNull { valueCore.get(it) }
             ?: emptyList()
     }
 
-    override fun getStream(): Flow<List<Value>> {
+    override fun getStream(): Flow<List<V>> {
         return indexCore.getStream(indexKey)
             .map { index -> index.values }
             .map { keys -> keys.mapNotNull { valueCore.get(it) } }
@@ -36,7 +38,7 @@ open class ItemListStore<IndexKey, ValueKey, Value : Any>(
      * of all the values.
      */
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-    override suspend fun put(values: List<Value>): Boolean {
+    override suspend fun put(values: List<V>): Boolean {
         // Put values first in case there's a listener for the index. This way values
         // already exist for any listeners to query.
         val valueChanged = values.map { value -> valueCore.put(keyForValue(value), value) }.any()

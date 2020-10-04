@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import com.example.app.ui.adapter.CommonAdapter
+import com.example.app.ui.adapter.ListAdapter
 
 class RecyclerViewListener(
     context: Context,
@@ -34,7 +34,7 @@ class RecyclerViewListener(
 inline fun <reified T> RecyclerView.setClickListener(noinline callback: (T) -> Unit) {
     addOnItemTouchListener(
         RecyclerViewListener(context) { position ->
-            ((adapter as CommonAdapter<*>).itemAt(position) as? T)
+            ((adapter as ListAdapter<*>).itemAt(position) as? T)
                 ?.let { callback.invoke(it) }
         }
     )

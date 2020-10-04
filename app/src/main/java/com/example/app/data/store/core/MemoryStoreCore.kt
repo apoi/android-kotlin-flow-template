@@ -18,10 +18,10 @@ open class MemoryStoreCore<K, V>(
     // All values in the store
     private val cache = ConcurrentHashMap<K, V>()
 
-    // Flow of values from the
+    // Flow of all values
     private val stream = ConflatedBroadcastChannel<V>()
 
-    // Listeners for values
+    // Listeners for given keys
     private val listeners = ConcurrentHashMap<K, ConflatedBroadcastChannel<V>>()
 
     override suspend fun get(key: K): V? {
@@ -40,6 +40,7 @@ open class MemoryStoreCore<K, V>(
         return stream.asFlow()
     }
 
+    // TODO race condition with cache writes
     override suspend fun put(key: K, value: V): Boolean {
         val (newValue, valuesDiffer) = mergeValues(cache[key], value, merge)
 
@@ -60,12 +61,12 @@ open class MemoryStoreCore<K, V>(
     }
 
     private fun getOrCreateChannel(key: K): BroadcastChannel<V> {
-        // Channel already exists, just return
+        // Just return if channel already exists
         listeners[key]?.let {
             return@getOrCreateChannel it
         }
 
-        // Doesn't exist, create new channel and init with content
+        // Doesn't exist, create new channel and init if value exist
         return ConflatedBroadcastChannel<V>().also { channel ->
             cache[key]?.let { channel.offer(it) }
             listeners.putIfAbsent(key, channel)
