@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app.data.pojo.Photo
 import com.example.app.data.state.State
 import com.example.app.features.main.album.adapter.AlbumItemModel
 import com.example.app.features.main.album.store.AlbumRepository

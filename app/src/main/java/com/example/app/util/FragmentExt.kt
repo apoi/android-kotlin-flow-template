@@ -14,7 +14,8 @@ import kotlin.reflect.KProperty
  * Convenience method for creating ViewBinding from Fragment's view with View
  * lifecycle using `viewLifecycle` extension below.
  */
-fun <T : ViewBinding> Fragment.viewBinding(bind: (View) -> T) = viewLifecycle { bind(requireView()) }
+fun <T : ViewBinding> Fragment.viewBinding(bind: (View) -> T) =
+    viewLifecycle { bind(requireView()) }
 
 /**
  * Binds a value to View lifecycle. Value is created with the initialization

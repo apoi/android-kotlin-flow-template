@@ -2,6 +2,7 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 plugins {
     id(Plugins.Id.Android.Application) version Versions.Plugin.Gradle apply false
+    kotlin(Plugins.Id.Kotlin.Android) version Versions.Plugin.Kotlin apply false
     id(Plugins.Id.Detekt) version Versions.Plugin.Detekt
     id(Plugins.Id.Ktlint) version Versions.Plugin.Ktlint
     id(Plugins.Id.Version) version Versions.Plugin.Version
@@ -22,13 +23,9 @@ subprojects {
     }
 
     ktlint {
-        debug.set(false)
         version.set(Versions.Ktlint)
         verbose.set(true)
-        android.set(false)
-        outputToConsole.set(true)
-        ignoreFailures.set(false)
-        enableExperimentalRules.set(true)
+        android.set(true)
         filter {
             exclude("**/generated/**")
             include("**/kotlin/**")
@@ -37,6 +34,7 @@ subprojects {
 
     detekt {
         config = rootProject.files("config/detekt/detekt.yml")
+        parallel = true
         reports {
             html {
                 enabled = true
@@ -46,7 +44,7 @@ subprojects {
     }
 }
 
-tasks.register("clean", Delete::class.java) {
+tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
 }
 

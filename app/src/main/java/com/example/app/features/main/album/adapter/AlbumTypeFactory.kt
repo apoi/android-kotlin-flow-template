@@ -18,7 +18,9 @@ class AlbumTypeFactory : ListTypeFactory() {
 
     override fun createViewHolder(type: Int, parent: ViewGroup): ListViewHolder<*> {
         return when (type) {
-            R.layout.album_list_item -> AlbumViewHolder(createBinding(AlbumListItemBinding::inflate, parent))
+            R.layout.album_list_item -> AlbumViewHolder(
+                createBinding(AlbumListItemBinding::inflate, parent)
+            )
             else -> error("Invalid type")
         }
     }

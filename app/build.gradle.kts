@@ -1,7 +1,7 @@
 plugins {
     id(Plugins.Id.Android.Application)
     kotlin(Plugins.Id.Kotlin.Android)
-    id(Plugins.Id.Kotlin.AndroidExtensions)
+    kotlin(Plugins.Id.Kotlin.AndroidExtensions)
 }
 
 android {
@@ -26,10 +26,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
 
-    viewBinding {
-        isEnabled = true
-    }
-
     androidExtensions {
         features = setOf("parcelize")
     }
@@ -42,6 +38,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
 
     lintOptions {
@@ -68,7 +68,6 @@ dependencies {
     implementation(Libraries.Koin.Scope)
     implementation(Libraries.Koin.ViewModel)
 
-    implementation(Libraries.Kotlin.StdLib)
     implementation(Libraries.Kotlin.Coroutines.Core)
     implementation(Libraries.Kotlin.Coroutines.Android)
 

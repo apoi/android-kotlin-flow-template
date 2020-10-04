@@ -3,7 +3,6 @@ package com.example.app.features.main.album
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
@@ -19,7 +18,6 @@ import com.example.app.ui.base.BaseFragment
 import com.example.app.ui.listener.setClickListener
 import com.example.app.util.viewBinding
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.flow.collect
 import org.koin.android.ext.android.inject
 
 class AlbumFragment : BaseFragment(R.layout.album_fragment) {

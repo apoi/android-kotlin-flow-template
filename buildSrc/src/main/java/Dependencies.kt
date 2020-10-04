@@ -8,9 +8,7 @@ object Plugins {
     object Id {
         object Kotlin {
             const val Android = "android"
-            const val AndroidExtensions = "kotlin-android-extensions"
-            const val Kapt = "kotlin-kapt"
-            const val Kotlin = "kotlin"
+            const val AndroidExtensions = "android.extensions"
         }
 
         object Android {
@@ -26,24 +24,24 @@ object Plugins {
 
 object Versions {
     object Plugin {
-        const val Detekt = "1.11.0"
-        const val Gradle = "4.0.1"
-        const val Kotlin = "1.3.72"
-        const val Ktlint = "9.3.0"
-        const val Version = "0.29.0"
+        const val Detekt = "1.14.1"
+        const val Gradle = "4.0.2"
+        const val Kotlin = "1.4.10"
+        const val Ktlint = "9.4.1"
+        const val Version = "0.33.0"
     }
 
     object AndroidX {
         const val AppCompat = "1.2.0"
-        const val ConstraintLayout = "1.1.3"
-        const val CoreKt = "1.3.1"
+        const val ConstraintLayout = "2.0.1"
+        const val CoreKt = "1.3.2"
         const val Lifecycle = "2.2.0"
         const val RecyclerView = "1.1.0"
         const val SwipeRefreshLayout = "1.1.0"
     }
 
     object OkHttp {
-        const val OkHttp = "4.8.1"
+        const val OkHttp = "4.9.0"
         const val AndroidSupport = "3.13.1"
     }
 
@@ -54,12 +52,12 @@ object Versions {
 
     object Kotlin {
         const val Kotlin = Plugin.Kotlin
-        const val Coroutines = "1.3.8"
+        const val Coroutines = "1.3.9"
     }
 
     const val Koin = "2.1.6"
-    const val Ktlint = "0.37.2"
-    const val Material = "1.2.0"
+    const val Ktlint = "0.39.0"
+    const val Material = "1.2.1"
     const val Navigation = "2.3.0"
     const val Retrofit = "2.9.0"
     const val ThreeTenABP = "1.2.4"
@@ -67,11 +65,11 @@ object Versions {
 
     object Testing {
         object AndroidX {
-            const val Test = "1.2.0"
-            const val TestExt = "1.1.1"
+            const val Test = "1.3.0"
+            const val TestExt = "1.1.2"
         }
 
-        const val EspressoCore = "3.2.0"
+        const val EspressoCore = "3.3.0"
         const val JUnit = "4.13"
     }
 }
@@ -114,8 +112,6 @@ object Libraries {
             const val Core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.Kotlin.Coroutines}"
             const val Android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.Kotlin.Coroutines}"
         }
-
-        const val StdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.Kotlin.Kotlin}"
     }
 
     object OkHttp {
