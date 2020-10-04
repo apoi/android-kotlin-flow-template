@@ -1,16 +1,21 @@
 package com.example.app.features.main.album.store
 
 import com.example.app.data.pojo.Photo
-import com.example.app.data.store.core.MemoryStoreCore
+import com.example.app.data.repository.ItemList
+import com.example.app.data.store.StoreCore
 import com.example.app.data.store.store.ItemListStore
 
-class AlbumStore : ItemListStore<String, Int, Photo>(
-    indexKey = PHOTO_INDEX_KEY,
+class AlbumStore(
+    indexStoreCore: StoreCore<String, ItemList<String, Int>>,
+    photoStoreCore: StoreCore<Int, Photo>
+) : ItemListStore<String, Int, Photo>(
+    indexKey = ALBUM_KEY,
     keyForValue = Photo::id,
-    indexCore = MemoryStoreCore(),
-    valueCore = MemoryStoreCore()
+    indexCore = indexStoreCore,
+    valueCore = photoStoreCore
 ) {
+
     companion object {
-        const val PHOTO_INDEX_KEY = "photos"
+        const val ALBUM_KEY = "album"
     }
 }

@@ -8,4 +8,6 @@ import com.example.app.network.PhotoApi
 class AlbumRepository(
     store: AlbumStore,
     photoApi: PhotoApi
-) : ItemListRepository<String, Int, Photo>(store, SingleApi { photoApi.get() })
+) : ItemListRepository<String, Int, Photo>(
+    store, SingleApi { photoApi.get() }
+)

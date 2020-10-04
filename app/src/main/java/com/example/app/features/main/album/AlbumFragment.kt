@@ -24,9 +24,10 @@ import org.koin.android.ext.android.inject
 
 class AlbumFragment : BaseFragment(R.layout.album_fragment) {
 
-    private val viewModel: AlbumViewModel by inject()
     private val binding by viewBinding(AlbumFragmentBinding::bind)
     private val photoAdapter = ListAdapter<AlbumItemModel>(AlbumTypeFactory())
+
+    private val viewModel: AlbumViewModel by inject()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,21 +42,20 @@ class AlbumFragment : BaseFragment(R.layout.album_fragment) {
             setClickListener(::onItemSelected)
         }
 
-        lifecycleScope.launchWhenStarted {
-            viewModel.getPhotos()
-                .collect {
-                    when (it) {
-                        State.Loading -> Unit
-                        is State.Success -> { photoAdapter.setItems(it.value) }
-                        is State.Error -> Unit
-                    }
-                }
-        }
-
         binding.listFab.setOnClickListener {
             Snackbar.make(it, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
                 .show()
+        }
+    }
+
+    override fun observeViewState() {
+        observe(viewModel.photos) {
+            when (it) {
+                State.Loading -> Unit
+                is State.Success -> { photoAdapter.setItems(it.value) }
+                is State.Error -> Unit
+            }
         }
     }
 
@@ -64,7 +64,7 @@ class AlbumFragment : BaseFragment(R.layout.album_fragment) {
             .navigate(
                 R.id.list_to_photo,
                 bundleOf(
-                    DetailsFragment.ID to photo.url,
+                    DetailsFragment.ID to photo.id,
                     MainActivity.FULLSCREEN to true
                 )
             )

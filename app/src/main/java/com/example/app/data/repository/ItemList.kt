@@ -1,4 +1,4 @@
-package com.example.app.data.pojo
+package com.example.app.data.repository
 
 data class ItemList<K, V>(
     val key: K,

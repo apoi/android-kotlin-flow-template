@@ -1,15 +1,14 @@
 package com.example.app.data.store.store
 
-import com.example.app.data.pojo.ItemList
+import com.example.app.data.repository.ItemList
 import com.example.app.data.store.SingleStore
 import com.example.app.data.store.StoreCore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 /**
- * Store for lists of items. Keeps index of the items in one core,
- * and items themselves in another core. This allows each item to
- * exist in multiple indexes and be queried independently.
+ * Store for lists of items. Keeps index of the items in one core, and items themselves in another
+ * core. This allows each item to exist in multiple indexes and be queried independently.
  *
  * @param
  */
@@ -34,8 +33,7 @@ open class ItemListStore<I, K, V : Any>(
     }
 
     /**
-     * Put all values to store, and add index to keep track
-     * of all the values.
+     * Put all values to store, and add index to keep track of all the values.
      */
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override suspend fun put(values: List<V>): Boolean {
