@@ -1,4 +1,4 @@
-package com.example.app.features.main
+package com.example.app.feature
 
 import android.os.Bundle
 import android.view.View

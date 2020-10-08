@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/about_fragment"
-        android:name="com.example.app.features.main.about.AboutFragment"
+        android:name="com.example.app.feature.about.AboutFragment"
         android:label="@string/about_title"
         tools:layout="@layout/about_fragment" />
 

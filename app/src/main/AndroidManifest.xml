@@ -17,7 +17,7 @@
         tools:ignore="AllowBackup">
 
         <activity
-            android:name="com.example.app.features.main.MainActivity"
+            android:name="com.example.app.feature.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
 

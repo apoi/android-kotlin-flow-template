@@ -1,14 +1,14 @@
 package com.example.app.inject
 
-import com.example.app.data.pojo.Photo
+import com.example.app.data.model.Photo
 import com.example.app.data.repository.ItemList
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.core.MemoryStoreCore
-import com.example.app.features.main.album.AlbumViewModel
-import com.example.app.features.main.album.store.AlbumRepository
-import com.example.app.features.main.album.store.AlbumStore
-import com.example.app.features.main.details.DetailsViewModel
-import com.example.app.features.main.details.store.DetailsStore
+import com.example.app.feature.album.AlbumViewModel
+import com.example.app.feature.album.store.AlbumRepository
+import com.example.app.feature.album.store.AlbumStore
+import com.example.app.feature.details.DetailsViewModel
+import com.example.app.feature.details.store.DetailsStore
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory

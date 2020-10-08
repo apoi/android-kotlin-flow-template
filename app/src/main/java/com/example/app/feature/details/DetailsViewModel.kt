@@ -1,11 +1,11 @@
-package com.example.app.features.main.details
+package com.example.app.feature.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app.data.pojo.Photo
-import com.example.app.features.main.details.store.DetailsStore
+import com.example.app.data.model.Photo
+import com.example.app.feature.details.store.DetailsStore
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(

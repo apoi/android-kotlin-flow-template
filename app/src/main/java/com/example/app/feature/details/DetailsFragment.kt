@@ -1,4 +1,4 @@
-package com.example.app.features.main.details
+package com.example.app.feature.details
 
 import com.example.app.R
 import com.example.app.databinding.DetailsFragmentBinding

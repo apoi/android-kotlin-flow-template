@@ -1,12 +1,12 @@
-package com.example.app.features.main.album
+package com.example.app.feature.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app.data.state.State
-import com.example.app.features.main.album.adapter.AlbumItemModel
-import com.example.app.features.main.album.store.AlbumRepository
+import com.example.app.feature.album.adapter.AlbumItemModel
+import com.example.app.feature.album.store.AlbumRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map

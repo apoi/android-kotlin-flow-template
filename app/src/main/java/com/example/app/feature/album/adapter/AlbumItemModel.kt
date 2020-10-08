@@ -1,6 +1,6 @@
-package com.example.app.features.main.album.adapter
+package com.example.app.feature.album.adapter
 
-import com.example.app.data.pojo.Photo
+import com.example.app.data.model.Photo
 import com.example.app.ui.adapter.ListItem
 import com.example.app.ui.adapter.ListTypeFactory
 

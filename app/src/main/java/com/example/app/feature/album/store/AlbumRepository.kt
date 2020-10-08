@@ -1,7 +1,7 @@
-package com.example.app.features.main.album.store
+package com.example.app.feature.album.store
 
 import com.example.app.data.api.SingleApi
-import com.example.app.data.pojo.Photo
+import com.example.app.data.model.Photo
 import com.example.app.data.repository.ItemListRepository
 import com.example.app.network.PhotoApi
 

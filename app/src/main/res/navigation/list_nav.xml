@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/list_fragment"
-        android:name="com.example.app.features.main.album.AlbumFragment"
+        android:name="com.example.app.feature.album.AlbumFragment"
         android:label="@string/album_title"
         tools:layout="@layout/album_fragment">
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/details_fragment"
-        android:name="com.example.app.features.main.details.DetailsFragment"
+        android:name="com.example.app.feature.details.DetailsFragment"
         android:label="@string/details_title"
         tools:layout="@layout/details_fragment" />
 

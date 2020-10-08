@@ -1,4 +1,4 @@
-package com.example.app.features.main.album.adapter
+package com.example.app.feature.album.adapter
 
 import com.example.app.databinding.AlbumListItemBinding
 import com.example.app.ui.adapter.ListViewHolder

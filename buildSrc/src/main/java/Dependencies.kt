@@ -33,7 +33,7 @@ object Versions {
 
     object AndroidX {
         const val AppCompat = "1.2.0"
-        const val ConstraintLayout = "2.0.1"
+        const val ConstraintLayout = "2.0.2"
         const val CoreKt = "1.3.2"
         const val Lifecycle = "2.2.0"
         const val RecyclerView = "1.1.0"

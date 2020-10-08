@@ -1,4 +1,4 @@
-package com.example.app.features.main.album
+package com.example.app.feature.album
 
 import android.os.Bundle
 import android.view.View
@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.data.state.State
 import com.example.app.databinding.AlbumFragmentBinding
-import com.example.app.features.main.MainActivity
-import com.example.app.features.main.album.adapter.AlbumItemModel
-import com.example.app.features.main.album.adapter.AlbumTypeFactory
-import com.example.app.features.main.details.DetailsFragment
+import com.example.app.feature.MainActivity
+import com.example.app.feature.album.adapter.AlbumItemModel
+import com.example.app.feature.album.adapter.AlbumTypeFactory
+import com.example.app.feature.details.DetailsFragment
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.ListAdapter
 import com.example.app.ui.base.BaseFragment
