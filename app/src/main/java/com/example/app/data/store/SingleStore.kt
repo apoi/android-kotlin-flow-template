@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Store for a single item. Useful for representing lists of values.
  */
-interface SingleStore<V, R> {
+interface SingleStore<V, out R> {
 
     suspend fun get(): R
 

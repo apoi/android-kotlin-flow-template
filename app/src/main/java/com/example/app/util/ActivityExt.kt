@@ -20,7 +20,5 @@ fun <T : ViewBinding> Activity.viewBinding(bind: (View) -> T): Lazy<T> = object 
             binding = it
         }
 
-    private fun contentView(): View {
-        return findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
-    }
+    private fun contentView() = findViewById<ViewGroup>(android.R.id.content).getChildAt(0)
 }

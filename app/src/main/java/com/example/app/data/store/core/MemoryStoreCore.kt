@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asFlow
 /**
  * Base memory store core.
  */
-open class MemoryStoreCore<K, V>(
+open class MemoryStoreCore<in K, V>(
     private val merge: (V, V) -> V = takeNew()
 ) : StoreCore<K, V> {
 
@@ -68,7 +68,7 @@ open class MemoryStoreCore<K, V>(
 
         // Doesn't exist, create new channel and init if value exist
         return ConflatedBroadcastChannel<V>().also { channel ->
-            cache[key]?.let { channel.offer(it) }
+            cache[key]?.let(channel::offer)
             listeners.putIfAbsent(key, channel)
         }
     }

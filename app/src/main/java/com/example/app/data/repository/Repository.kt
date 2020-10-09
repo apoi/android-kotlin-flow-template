@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
  * Repository binds [Store] and [Api] together to a data source that handles
  * data fetching and persisting.
  */
-abstract class Repository<K, V> {
+abstract class Repository<in K, V> {
 
     /**
      * Returns the current state without fetching.
@@ -33,7 +33,7 @@ abstract class Repository<K, V> {
             // Invalid value triggers fetch. It must not trigger clearing of the
             // value as the value may still be valid for another consumer with
             // a different validator.
-            val isValid = getLocal(key)?.let { validator.validate(it) } == true
+            val isValid = getLocal(key)?.let(validator::validate) == true
 
             if (!isValid) {
                 when (val response = fetchRemote(key)) {

@@ -4,7 +4,7 @@ import com.example.app.data.store.Store
 import com.example.app.data.store.StoreCore
 import kotlinx.coroutines.flow.Flow
 
-open class DefaultStore<K, V>(
+open class DefaultStore<in K, V>(
     private val core: StoreCore<K, V>,
     private val getKey: (V) -> K
 ) : Store<K, V, V?> {

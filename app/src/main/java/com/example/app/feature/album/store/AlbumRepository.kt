@@ -9,6 +9,5 @@ class AlbumRepository(
     store: AlbumStore,
     photoApi: PhotoApi
 ) : ItemListRepository<String, Int, Photo>(
-    store,
-    SingleApi { photoApi.get() }
+    store, SingleApi(photoApi::get)
 )

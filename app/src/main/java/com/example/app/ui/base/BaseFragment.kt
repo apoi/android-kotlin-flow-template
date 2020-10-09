@@ -16,6 +16,6 @@ open class BaseFragment(@LayoutRes layout: Int) : Fragment(layout) {
     open fun observeViewState() = Unit
 
     fun <T> observe(state: LiveData<T>, observer: (T) -> Unit) {
-        state.observe(this, Observer { observer.invoke(it) })
+        state.observe(this, observer::invoke)
     }
 }

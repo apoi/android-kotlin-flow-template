@@ -14,9 +14,7 @@ class RecyclerViewListener(
     private val detector = GestureDetector(
         context,
         object : GestureDetector.SimpleOnGestureListener() {
-            override fun onSingleTapUp(e: MotionEvent?): Boolean {
-                return true
-            }
+            override fun onSingleTapUp(e: MotionEvent?) = true
         }
     )
 
@@ -35,7 +33,7 @@ inline fun <reified T> RecyclerView.setClickListener(noinline callback: (T) -> U
     addOnItemTouchListener(
         RecyclerViewListener(context) { position ->
             ((adapter as ListAdapter<*>).itemAt(position) as? T)
-                ?.let { callback.invoke(it) }
+                ?.let(callback::invoke)
         }
     )
 }

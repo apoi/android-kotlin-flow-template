@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * ItemListRepository handles lists of items.
  */
-open class ItemListRepository<I, K, V : Any>(
+open class ItemListRepository<in I, K, V : Any>(
     private val store: ItemListStore<I, K, V>,
     private val api: SingleApi<List<V>>
 ) : Repository<I, List<V>>() {

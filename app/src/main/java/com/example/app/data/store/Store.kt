@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
  * @param <U> Type of the data this store contains.
  * @param <R> Non-null type or wrapper for the data this store contains.
  */
-interface Store<K, V, R> {
+interface Store<in K, V, out R> {
 
     /**
      * Returns value for given key, or empty value if key doesn't exist in store.

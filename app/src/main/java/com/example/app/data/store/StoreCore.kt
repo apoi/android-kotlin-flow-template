@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
  * @param <V> Type of values
  * @param <R> Type of empty values
  */
-interface StoreCore<K, V> {
+interface StoreCore<in K, V> {
 
     /**
      * Takes a key and returns the matching value, or null if the value isn't stored.

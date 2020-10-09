@@ -1,6 +1,6 @@
 package com.example.app.data.repository
 
-interface Validator<V> {
+interface Validator<in V> {
     fun validate(value: V): Boolean
 }
 
