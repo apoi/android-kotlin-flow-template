@@ -9,6 +9,7 @@ object Plugins {
         object Kotlin {
             const val Android = "android"
             const val AndroidExtensions = "android.extensions"
+            const val Kapt = "kotlin-kapt"
         }
 
         object Android {
@@ -37,6 +38,7 @@ object Versions {
         const val CoreKt = "1.3.2"
         const val Lifecycle = "2.2.0"
         const val RecyclerView = "1.1.0"
+        const val Room = "2.2.5"
         const val SwipeRefreshLayout = "1.1.0"
     }
 
@@ -85,6 +87,12 @@ object Libraries {
         object Navigation {
             const val Fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.Navigation}"
             const val Ui = "androidx.navigation:navigation-ui-ktx:${Versions.Navigation}"
+        }
+
+        object Room {
+            const val Runtime = "androidx.room:room-runtime:${Versions.AndroidX.Room}"
+            const val Compiler = "androidx.room:room-compiler:${Versions.AndroidX.Room}"
+            const val Extensions = "androidx.room:room-ktx:${Versions.AndroidX.Room}"
         }
 
         const val AppCompat = "androidx.appcompat:appcompat:${Versions.AndroidX.AppCompat}"

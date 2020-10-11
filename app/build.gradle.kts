@@ -2,6 +2,7 @@ plugins {
     id(Plugins.Id.Android.Application)
     kotlin(Plugins.Id.Kotlin.Android)
     kotlin(Plugins.Id.Kotlin.AndroidExtensions)
+    id(Plugins.Id.Kotlin.Kapt)
 }
 
 android {
@@ -60,6 +61,9 @@ dependencies {
     implementation(Libraries.AndroidX.Navigation.Fragment)
     implementation(Libraries.AndroidX.Navigation.Ui)
     implementation(Libraries.AndroidX.RecyclerView)
+    implementation(Libraries.AndroidX.Room.Runtime)
+    kapt(Libraries.AndroidX.Room.Compiler)
+    implementation(Libraries.AndroidX.Room.Extensions)
     implementation(Libraries.AndroidX.SwipeRefreshLayout)
 
     implementation(Libraries.Google.Material)

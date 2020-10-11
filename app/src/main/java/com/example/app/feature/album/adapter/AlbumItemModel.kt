@@ -1,6 +1,6 @@
 package com.example.app.feature.album.adapter
 
-import com.example.app.data.model.Photo
+import com.example.app.model.photo.Photo
 import com.example.app.ui.adapter.ListItem
 import com.example.app.ui.adapter.ListTypeFactory
 

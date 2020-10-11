@@ -1,6 +1,6 @@
 package com.example.app.network
 
-import com.example.app.data.model.Photo
+import com.example.app.model.photo.Photo
 import com.example.app.network.result.Result
 import retrofit2.http.GET
 

@@ -5,6 +5,7 @@ import com.example.app.data.store.SingleStore
 import com.example.app.data.store.StoreCore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 /**
  * Store for lists of items. Keeps index of the items in one core, and items themselves in another
@@ -20,16 +21,34 @@ open class ItemListStore<I, K, V : Any>(
 ) : SingleStore<List<V>, List<V>> {
 
     override suspend fun get(): List<V> {
-        return indexCore.get(indexKey)
+        val time1 = System.currentTimeMillis()
+
+        val values = indexCore.get(indexKey)
             ?.values
             ?.mapNotNull { valueCore.get(it) }
             ?: emptyList()
+
+        val time2 = System.currentTimeMillis()
+        val time3 = time2 - time1
+        Timber.w("GET: $time3 MILLIS")
+
+        return values
     }
 
     override fun getStream(): Flow<List<V>> {
         return indexCore.getStream(indexKey)
             .map { index -> index.values }
-            .map { keys -> keys.mapNotNull { valueCore.get(it) } }
+            .map { keys ->
+                val time1 = System.currentTimeMillis()
+
+                val value = keys.mapNotNull { valueCore.get(it) }
+
+                val time2 = System.currentTimeMillis()
+                val time3 = time2 - time1
+                Timber.w("STREAM: $time3 MILLIS")
+
+                value
+            }
     }
 
     /**
@@ -39,8 +58,17 @@ open class ItemListStore<I, K, V : Any>(
     override suspend fun put(values: List<V>): Boolean {
         // Put values first in case there's a listener for the index. This way values
         // already exist for any listeners to query.
-        val valueChanged = values.map { value -> valueCore.put(keyForValue(value), value) }.any()
+        val time1 = System.currentTimeMillis()
+
+        val valueChanged = values
+            .map { value -> Pair(keyForValue(value), value) }
+            .let { items -> valueCore.put(items.toMap()) }
+
         val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(keyForValue)))
+
+        val time2 = System.currentTimeMillis()
+        val time3 = time2 - time1
+        Timber.w("INSERT: $time3 MILLIS")
 
         return valueChanged || indexChanged
     }

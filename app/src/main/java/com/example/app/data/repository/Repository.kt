@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
 /**
  * Repository binds [Store] and [Api] together to a data source that handles

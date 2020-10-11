@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app.data.state.State
 import com.example.app.feature.album.adapter.AlbumItemModel
-import com.example.app.feature.album.store.AlbumRepository
+import com.example.app.model.photo.repository.PhotoListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AlbumViewModel(
-    private val repository: AlbumRepository
+    private val repository: PhotoListRepository
 ) : ViewModel() {
 
     private val _photos = MutableLiveData<State<List<AlbumItemModel>>>()

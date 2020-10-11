@@ -1,14 +1,19 @@
 package com.example.app.inject
 
-import com.example.app.data.model.Photo
+import androidx.room.Room
+import com.example.app.model.photo.Photo
 import com.example.app.data.repository.ItemList
+import com.example.app.data.room.DATABASE_NAME
+import com.example.app.data.room.Database
 import com.example.app.data.store.StoreCore
+import com.example.app.data.store.core.CachingStoreCore
 import com.example.app.data.store.core.MemoryStoreCore
 import com.example.app.feature.album.AlbumViewModel
-import com.example.app.feature.album.store.AlbumRepository
-import com.example.app.feature.album.store.AlbumStore
+import com.example.app.model.photo.repository.PhotoListRepository
+import com.example.app.model.photo.store.PhotoListStore
 import com.example.app.feature.details.DetailsViewModel
-import com.example.app.feature.details.store.DetailsStore
+import com.example.app.model.photo.store.PhotoRoomCore
+import com.example.app.model.photo.store.PhotoStore
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory
@@ -58,15 +63,23 @@ val appModule = module {
             .build()
     }
 
+    single {
+        Room.databaseBuilder(get(), Database::class.java, DATABASE_NAME)
+            .build()
+    }
+
     // Index core is used for storing lists of items
     single<StoreCore<String, ItemList<String, Int>>>(named("indexCore")) { MemoryStoreCore() }
-    single<StoreCore<Int, Photo>> { MemoryStoreCore() }
 
-    factory { AlbumStore(get(named("indexCore")), get()) }
-    factory { AlbumRepository(get(), get()) }
-    factory { DetailsStore(get()) }
+    // Photo stores
+    single<StoreCore<Int, Photo>> {
+        CachingStoreCore(PhotoRoomCore(get()), Photo::id, Photo.merger)
+    }
+    factory { PhotoStore(get()) }
 
-    factory { }
+    // Photo list stores
+    factory { PhotoListStore(get(named("indexCore")), get()) }
+    factory { PhotoListRepository(get(), get()) }
 
     viewModel { AlbumViewModel(get()) }
     viewModel { (id: Int) -> DetailsViewModel(id, get()) }

@@ -1,21 +1,21 @@
-package com.example.app.feature.album.store
+package com.example.app.model.photo.store
 
-import com.example.app.data.model.Photo
 import com.example.app.data.repository.ItemList
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.store.ItemListStore
+import com.example.app.model.photo.Photo
 
-class AlbumStore(
+class PhotoListStore(
     indexStoreCore: StoreCore<String, ItemList<String, Int>>,
     photoStoreCore: StoreCore<Int, Photo>
 ) : ItemListStore<String, Int, Photo>(
-    indexKey = ALBUM_KEY,
+    indexKey = KEY,
     keyForValue = Photo::id,
     indexCore = indexStoreCore,
     valueCore = photoStoreCore
 ) {
 
     companion object {
-        const val ALBUM_KEY = "album"
+        private const val KEY = "photoList"
     }
 }

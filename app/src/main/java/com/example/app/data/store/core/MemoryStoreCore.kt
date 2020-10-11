@@ -1,5 +1,6 @@
 package com.example.app.data.store.core
 
+import com.example.app.data.store.Merger
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.StoreCore.Companion.takeNew
 import java.util.concurrent.ConcurrentHashMap
@@ -7,12 +8,13 @@ import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.map
 
 /**
  * Base memory store core.
  */
-open class MemoryStoreCore<in K, V>(
-    private val merge: (V, V) -> V = takeNew()
+open class MemoryStoreCore<K, V>(
+    private val merger: Merger<V> = takeNew()
 ) : StoreCore<K, V> {
 
     // All values in the store
@@ -32,17 +34,22 @@ open class MemoryStoreCore<in K, V>(
         return getOrCreateChannel(key).asFlow()
     }
 
+    override fun getInsertStream(): Flow<V> {
+        return stream.asFlow()
+    }
+
     override suspend fun getAll(): List<V> {
         return cache.values.toList()
     }
 
-    override fun getAllStream(): Flow<V> {
+    override fun getAllStream(): Flow<List<V>> {
         return stream.asFlow()
+            .map { getAll() }
     }
 
     // TODO race condition with cache writes
     override suspend fun put(key: K, value: V): Boolean {
-        val (newValue, valuesDiffer) = mergeValues(cache[key], value, merge)
+        val (newValue, valuesDiffer) = mergeValues(cache[key], value, merger)
 
         if (!valuesDiffer) {
             // Data is already up to date
@@ -54,6 +61,12 @@ open class MemoryStoreCore<in K, V>(
         listeners[key]?.send(newValue)
 
         return true
+    }
+
+    override suspend fun put(items: Map<K, V>): Boolean {
+        return items.map { (key, value) ->
+            put(key, value)
+        }.any()
     }
 
     override suspend fun delete(key: K): Boolean {
