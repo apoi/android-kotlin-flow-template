@@ -3,7 +3,6 @@ package com.example.app.ui.base
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 
 open class BaseFragment(@LayoutRes layout: Int) : Fragment(layout) {
 

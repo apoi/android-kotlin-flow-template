@@ -1,17 +1,17 @@
 package com.example.app.inject
 
 import androidx.room.Room
-import com.example.app.model.photo.Photo
-import com.example.app.data.repository.ItemList
 import com.example.app.data.room.DATABASE_NAME
 import com.example.app.data.room.Database
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.core.CachingStoreCore
-import com.example.app.data.store.core.MemoryStoreCore
 import com.example.app.feature.album.AlbumViewModel
+import com.example.app.feature.details.DetailsViewModel
+import com.example.app.model.idlist.IdList
+import com.example.app.model.idlist.store.IdListRoomCore
+import com.example.app.model.photo.Photo
 import com.example.app.model.photo.repository.PhotoListRepository
 import com.example.app.model.photo.store.PhotoListStore
-import com.example.app.feature.details.DetailsViewModel
 import com.example.app.model.photo.store.PhotoRoomCore
 import com.example.app.model.photo.store.PhotoStore
 import com.example.app.network.NetworkConfig
@@ -68,17 +68,19 @@ val appModule = module {
             .build()
     }
 
-    // Index core is used for storing lists of items
-    single<StoreCore<String, ItemList<String, Int>>>(named("indexCore")) { MemoryStoreCore() }
+    // IdList core is used for storing lists of items
+    single<StoreCore<String, IdList>>(named<IdList>()) {
+        CachingStoreCore(IdListRoomCore(get()), IdList::key)
+    }
 
     // Photo stores
-    single<StoreCore<Int, Photo>> {
+    single<StoreCore<Int, Photo>>(named<Photo>()) {
         CachingStoreCore(PhotoRoomCore(get()), Photo::id, Photo.merger)
     }
-    factory { PhotoStore(get()) }
+    factory { PhotoStore(get(named<Photo>())) }
 
     // Photo list stores
-    factory { PhotoListStore(get(named("indexCore")), get()) }
+    factory { PhotoListStore(get(named<IdList>()), get(named<Photo>())) }
     factory { PhotoListRepository(get(), get()) }
 
     viewModel { AlbumViewModel(get()) }

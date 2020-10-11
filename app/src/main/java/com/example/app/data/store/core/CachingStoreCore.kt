@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+/**
+ * StoreCore that takes another core as parameter and adds a caching layer in front of it. This is
+ * useful especially if the other core is slow, such as a Room backed core.
+ */
 class CachingStoreCore<K, V>(
     private val persistingCore: StoreCore<K, V>,
     private val getKey: (V) -> K,

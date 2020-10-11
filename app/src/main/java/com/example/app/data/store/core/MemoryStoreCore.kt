@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 
 /**
- * Base memory store core.
+ * StoreCore with memory as the backing store. This store does not persist anything across
+ * application restarts.
  */
 open class MemoryStoreCore<K, V>(
     private val merger: Merger<V> = takeNew()

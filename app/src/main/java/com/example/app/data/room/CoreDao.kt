@@ -1,28 +1,63 @@
 package com.example.app.data.room
 
 import androidx.room.Insert
-import com.example.app.model.photo.store.PhotoEntity
-import kotlinx.coroutines.flow.Flow
+import androidx.room.OnConflictStrategy
+import com.example.app.data.store.Merger
+import com.example.app.data.store.StoreCore
 
-/**
- * DAO interface matching StoreCore operations.
- *
- * Room can't handle parent class with abstract methods.
- */
-abstract class CoreDao<in K, V> {
+abstract class CoreDao<out K, V>(
+    private val getKey: (V) -> K,
+    private val merger: Merger<V>
+) {
 
-    open suspend fun get(key: K): V? = TODO()
+    protected suspend fun put(
+        value: V,
+        get: suspend (K) -> V?
+    ): Boolean {
+        val oldValue = get(getKey(value))
+        val (newValue, valuesDiffer) = StoreCore.merge(oldValue, value, merger)
 
-    open fun getStream(key: K): Flow<V> = TODO()
+        if (!valuesDiffer) {
+            return false
+        }
 
-    open suspend fun getAll(): List<V> = TODO()
+        put(newValue)
+        return true
+    }
 
-    open fun getAllStream(): Flow<List<V>> = TODO()
+    protected suspend fun putBatch(
+        values: List<V>,
+        get: suspend (List<K>) -> List<V>
+    ): List<V> {
+        return values.chunked(BATCH_SIZE)
+            .map { processBatch(it, get) }
+            .flatten()
+    }
 
-    open suspend fun put(key: K, value: V): Boolean = TODO()
+    private suspend fun processBatch(
+        values: List<V>,
+        get: suspend (List<K>) -> List<V>
+    ): List<V> {
+        val oldValues = get(values.map(getKey))
+            .map { Pair(getKey(it), it) }
+            .toMap()
 
-    @Insert
-    abstract fun put(value: PhotoEntity)
+        val newValues = values
+            .map { StoreCore.merge(oldValues[getKey(it)], it, merger) }
+            .filter { it.second } // Take only if value changed
+            .map { it.first } // Merged values will be inserted
 
-    open suspend fun delete(key: K): Int = TODO()
+        if (newValues.isEmpty()) {
+            return emptyList()
+        }
+
+        put(newValues)
+        return newValues
+    }
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract suspend fun put(value: V)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    protected abstract suspend fun put(values: List<V>)
 }
