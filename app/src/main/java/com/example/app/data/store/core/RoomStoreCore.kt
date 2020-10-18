@@ -47,9 +47,9 @@ abstract class RoomStoreCore<K, V, E>(
     }
 
     override suspend fun put(key: K, value: V): Boolean {
-        val updated = dao.put(toEntity(value))
-        if (updated) insertStream.send(value)
-        return updated
+        return dao.put(toEntity(value))
+            ?.let(fromEntity)
+            ?.let { insertStream.send(it) } != null
     }
 
     override suspend fun put(items: Map<K, V>): Boolean {

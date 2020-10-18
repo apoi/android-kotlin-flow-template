@@ -18,11 +18,11 @@ abstract class PhotoDao : CoreDao<Int, PhotoEntity>(
 
     @Transaction
     open suspend fun get(keys: List<Int>): List<PhotoEntity> {
-        return getBatch(keys, ::getLimited)
+        return getBatch(keys, ::getList)
     }
 
     @Query("SELECT * FROM photos WHERE id IN (:keys)")
-    abstract suspend fun getLimited(keys: List<Int>): List<PhotoEntity>
+    abstract suspend fun getList(keys: List<Int>): List<PhotoEntity>
 
     @Query("SELECT * FROM photos WHERE id=:key")
     abstract fun getStream(key: Int): Flow<PhotoEntity>
@@ -37,7 +37,7 @@ abstract class PhotoDao : CoreDao<Int, PhotoEntity>(
     open suspend fun put(
         value: PhotoEntity,
         merger: Merger<PhotoEntity>
-    ): Boolean {
+    ): PhotoEntity? {
         return put(value, ::get)
     }
 

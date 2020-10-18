@@ -39,7 +39,7 @@ abstract class IdListDao : CoreDao<String, IdListEntity>(
     open suspend fun put(
         value: IdListEntity,
         merger: Merger<IdListEntity>
-    ): Boolean {
+    ): IdListEntity? {
         return put(value, ::get)
     }
 

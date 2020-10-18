@@ -20,7 +20,7 @@ interface RoomDaoProxy<in K, E> {
 
     fun getAllStream(): Flow<List<E>>
 
-    suspend fun put(value: E): Boolean
+    suspend fun put(value: E): E?
 
     suspend fun put(values: List<E>): List<E>
 

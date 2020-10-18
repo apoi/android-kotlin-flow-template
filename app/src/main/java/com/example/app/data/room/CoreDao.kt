@@ -10,6 +10,9 @@ abstract class CoreDao<K, V>(
     private val merger: Merger<V>
 ) {
 
+    /**
+     * Splits batch get to smaller batches to fit in database limits.
+     */
     protected suspend fun getBatch(
         keys: List<K>,
         get: suspend (List<K>) -> List<V>
@@ -19,31 +22,40 @@ abstract class CoreDao<K, V>(
             .flatten()
     }
 
+    /**
+     * Merges and puts a value to database. Returns changed value, or null if no change.
+     */
     protected suspend fun put(
         value: V,
         get: suspend (K) -> V?
-    ): Boolean {
+    ): V? {
         val oldValue = get(getKey(value))
         val (newValue, valuesDiffer) = StoreCore.merge(oldValue, value, merger)
 
         if (!valuesDiffer) {
-            return false
+            return null
         }
 
         put(newValue)
-        return true
+        return newValue
     }
 
+    /**
+     * Splits batch put to smaller batches to fit in database limits.
+     */
     protected suspend fun putBatch(
         values: List<V>,
         get: suspend (List<K>) -> List<V>
     ): List<V> {
         return values.chunked(BATCH_SIZE)
-            .map { processBatch(it, get) }
+            .map { putList(it, get) }
             .flatten()
     }
 
-    private suspend fun processBatch(
+    /**
+     * Merges and puts a list of values to database. Returns list of changed values.
+     */
+    private suspend fun putList(
         values: List<V>,
         get: suspend (List<K>) -> List<V>
     ): List<V> {
