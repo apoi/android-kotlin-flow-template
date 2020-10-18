@@ -26,7 +26,7 @@ object Plugins {
 object Versions {
     object Plugin {
         const val Detekt = "1.14.1"
-        const val Gradle = "4.0.2"
+        const val Gradle = "4.1.0"
         const val Kotlin = "1.4.10"
         const val Ktlint = "9.4.1"
         const val Version = "0.33.0"
@@ -37,6 +37,7 @@ object Versions {
         const val ConstraintLayout = "2.0.2"
         const val CoreKt = "1.3.2"
         const val Lifecycle = "2.2.0"
+        const val Navigation = "2.3.1"
         const val RecyclerView = "1.1.0"
         const val Room = "2.2.5"
         const val SwipeRefreshLayout = "1.1.0"
@@ -60,7 +61,6 @@ object Versions {
     const val Koin = "2.1.6"
     const val Ktlint = "0.39.0"
     const val Material = "1.2.1"
-    const val Navigation = "2.3.0"
     const val Retrofit = "2.9.0"
     const val ThreeTenABP = "1.2.4"
     const val Timber = "4.7.1"
@@ -72,7 +72,7 @@ object Versions {
         }
 
         const val EspressoCore = "3.3.0"
-        const val JUnit = "4.13"
+        const val JUnit = "4.13.1"
     }
 }
 
@@ -85,8 +85,8 @@ object Libraries {
         }
 
         object Navigation {
-            const val Fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.Navigation}"
-            const val Ui = "androidx.navigation:navigation-ui-ktx:${Versions.Navigation}"
+            const val Fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.AndroidX.Navigation}"
+            const val Ui = "androidx.navigation:navigation-ui-ktx:${Versions.AndroidX.Navigation}"
         }
 
         object Room {
