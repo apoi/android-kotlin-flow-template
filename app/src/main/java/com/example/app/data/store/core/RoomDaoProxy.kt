@@ -5,8 +5,10 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Interface for accessing a DAO that implements methods required for a StoreCore. DAO proxies are
  * needed as Room DAOs can't have abstract parent classes that would define the interface.
+ *
+ * This interface is different from StoreCore in that the put methods return the merged value.
  */
-interface RoomDaoProxy<in K, V, E> {
+interface RoomDaoProxy<in K, E> {
 
     suspend fun get(key: K): E?
 

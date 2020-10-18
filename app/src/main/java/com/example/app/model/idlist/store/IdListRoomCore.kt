@@ -18,7 +18,7 @@ class IdListRoomCore(
 private class IdListDaoProxy(
     private val dao: IdListDao,
     private val merger: Merger<IdListEntity>
-) : RoomDaoProxy<String, IdList, IdListEntity> {
+) : RoomDaoProxy<String, IdListEntity> {
 
     override suspend fun get(key: String) = dao.get(key)
 

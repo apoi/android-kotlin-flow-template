@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 abstract class RoomStoreCore<K, V, E>(
     private val fromEntity: (E) -> V,
     private val toEntity: (V) -> E,
-    private val dao: RoomDaoProxy<K, V, E>
+    private val dao: RoomDaoProxy<K, E>
 ) : StoreCore<K, V> {
 
     private val insertStream = ConflatedBroadcastChannel<V>()

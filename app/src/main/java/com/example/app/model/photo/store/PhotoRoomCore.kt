@@ -17,7 +17,7 @@ class PhotoRoomCore(
 private class PhotoDaoProxy(
     private val dao: PhotoDao,
     private val merger: Merger<PhotoEntity>
-) : RoomDaoProxy<Int, Photo, PhotoEntity> {
+) : RoomDaoProxy<Int, PhotoEntity> {
 
     override suspend fun get(key: Int) = dao.get(key)
 
