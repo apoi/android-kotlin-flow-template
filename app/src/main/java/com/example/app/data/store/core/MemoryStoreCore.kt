@@ -4,6 +4,8 @@ import com.example.app.data.store.Merger
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.StoreCore.Companion.takeNew
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlinx.coroutines.channels.BroadcastChannel
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.flow.Flow
@@ -27,12 +29,21 @@ open class MemoryStoreCore<K, V>(
     // Listeners for given keys
     private val listeners = ConcurrentHashMap<K, ConflatedBroadcastChannel<V>>()
 
+    // Guard for synchronizing all writing methods
+    private val lock = ReentrantLock()
+
     override suspend fun get(key: K): V? {
         return cache[key]
     }
 
+    override suspend fun get(keys: List<K>): List<V> {
+        return keys.mapNotNull { cache[it] }
+    }
+
     override fun getStream(key: K): Flow<V> {
-        return getOrCreateChannel(key).asFlow()
+        return lock.withLock {
+            getOrCreateChannel(key).asFlow()
+        }
     }
 
     override fun getInsertStream(): Flow<V> {
@@ -48,12 +59,14 @@ open class MemoryStoreCore<K, V>(
             .map { getAll() }
     }
 
-    // TODO race condition with cache writes
     override suspend fun put(key: K, value: V): Boolean {
+        lock.lock()
+
         val (newValue, valuesDiffer) = mergeValues(cache[key], value, merger)
 
         if (!valuesDiffer) {
             // Data is already up to date
+            lock.unlock()
             return false
         }
 
@@ -61,6 +74,7 @@ open class MemoryStoreCore<K, V>(
         stream.send(newValue)
         listeners[key]?.send(newValue)
 
+        lock.unlock()
         return true
     }
 
@@ -71,7 +85,9 @@ open class MemoryStoreCore<K, V>(
     }
 
     override suspend fun delete(key: K): Boolean {
-        return cache.remove(key) != null
+        return lock.withLock {
+            cache.remove(key) != null
+        }
     }
 
     private fun getOrCreateChannel(key: K): BroadcastChannel<V> {

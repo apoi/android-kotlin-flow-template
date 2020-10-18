@@ -20,16 +20,15 @@ open class ItemListStore<I, K, V : Any>(
 ) : SingleStore<List<V>, List<V>> {
 
     override suspend fun get(): List<V> {
-        return indexCore.get(indexKey)
-            ?.values
-            ?.mapNotNull { valueCore.get(it) }
+        return indexCore.get(indexKey)?.values
+            ?.let { valueCore.get(it) }
             ?: emptyList()
     }
 
     override fun getStream(): Flow<List<V>> {
         return indexCore.getStream(indexKey)
             .map { index -> index.values }
-            .map { keys -> keys.mapNotNull { valueCore.get(it) } }
+            .map(valueCore::get)
     }
 
     /**

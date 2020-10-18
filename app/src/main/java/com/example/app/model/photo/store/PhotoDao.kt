@@ -16,8 +16,13 @@ abstract class PhotoDao : CoreDao<Int, PhotoEntity>(
     @Query("SELECT * FROM photos WHERE id=:key")
     abstract suspend fun get(key: Int): PhotoEntity?
 
+    @Transaction
+    open suspend fun get(keys: List<Int>): List<PhotoEntity> {
+        return getBatch(keys, ::getLimited)
+    }
+
     @Query("SELECT * FROM photos WHERE id IN (:keys)")
-    abstract suspend fun get(keys: List<Int>): List<PhotoEntity>
+    abstract suspend fun getLimited(keys: List<Int>): List<PhotoEntity>
 
     @Query("SELECT * FROM photos WHERE id=:key")
     abstract fun getStream(key: Int): Flow<PhotoEntity>

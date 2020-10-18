@@ -7,6 +7,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 /**
  * StoreCore that takes another core as parameter and adds a caching layer in front of it. This is
@@ -19,21 +21,36 @@ class CachingStoreCore<K, V>(
 ) : StoreCore<K, V> {
 
     private val cacheCore = MemoryStoreCore<K, V>(merger)
+    private val lock = Mutex(false)
 
     init {
         // Permanent subscription to all updates to keep cache up-to-date
         GlobalScope.launch(Dispatchers.Default) {
             persistingCore
                 .getInsertStream()
-                .collect { value -> cacheCore.put(getKey(value), value) }
+                .collect { value ->
+                    lock.withLock { cacheCore.put(getKey(value), value) }
+                }
         }
     }
 
     override suspend fun get(key: K): V? {
-        return cacheCore.get(key)
-            ?: persistingCore.get(key)?.also { value ->
-                cacheCore.put(key, value)
-            }
+        return lock.withLock {
+            cacheCore.get(key)
+                ?: persistingCore.get(key)?.also { value ->
+                    cacheCore.put(key, value)
+                }
+        }
+    }
+
+    override suspend fun get(keys: List<K>): List<V> {
+        val cached = cacheCore.get(keys)
+        if (keys.size == cached.size) return cached
+
+        return lock.withLock {
+            persistingCore.get(keys)
+                .also { cacheCore.put(it.associateBy(getKey)) }
+        }
     }
 
     override fun getStream(key: K): Flow<V> {
@@ -61,7 +78,9 @@ class CachingStoreCore<K, V>(
     }
 
     override suspend fun delete(key: K): Boolean {
-        return persistingCore.delete(key)
-            .also { cacheCore.delete(key) }
+        return lock.withLock {
+            persistingCore.delete(key)
+                .also { cacheCore.delete(key) }
+        }
     }
 }

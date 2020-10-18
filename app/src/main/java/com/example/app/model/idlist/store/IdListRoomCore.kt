@@ -12,10 +12,10 @@ class IdListRoomCore(
 ) : RoomStoreCore<String, IdList, IdListEntity>(
     IdListEntity::toIdList,
     IdListEntity::fromIdList,
-    IdListProxy(database.idListDao(), StoreCore.takeNew())
+    IdListDaoProxy(database.idListDao(), StoreCore.takeNew())
 )
 
-private class IdListProxy(
+private class IdListDaoProxy(
     private val dao: IdListDao,
     private val merger: Merger<IdListEntity>
 ) : RoomDaoProxy<String, IdList, IdListEntity> {

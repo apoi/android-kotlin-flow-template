@@ -5,10 +5,19 @@ import androidx.room.OnConflictStrategy
 import com.example.app.data.store.Merger
 import com.example.app.data.store.StoreCore
 
-abstract class CoreDao<out K, V>(
+abstract class CoreDao<K, V>(
     private val getKey: (V) -> K,
     private val merger: Merger<V>
 ) {
+
+    protected suspend fun getBatch(
+        keys: List<K>,
+        get: suspend (List<K>) -> List<V>
+    ): List<V> {
+        return keys.chunked(BATCH_SIZE)
+            .map { get(it) }
+            .flatten()
+    }
 
     protected suspend fun put(
         value: V,

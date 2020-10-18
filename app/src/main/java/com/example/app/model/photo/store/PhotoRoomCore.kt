@@ -11,10 +11,10 @@ class PhotoRoomCore(
 ) : RoomStoreCore<Int, Photo, PhotoEntity>(
     PhotoEntity::toPhoto,
     PhotoEntity::fromPhoto,
-    PhotoProxy(database.photoDao(), PhotoEntity.merger)
+    PhotoDaoProxy(database.photoDao(), PhotoEntity.merger)
 )
 
-private class PhotoProxy(
+private class PhotoDaoProxy(
     private val dao: PhotoDao,
     private val merger: Merger<PhotoEntity>
 ) : RoomDaoProxy<Int, Photo, PhotoEntity> {

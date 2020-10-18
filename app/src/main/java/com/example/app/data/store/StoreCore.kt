@@ -29,6 +29,13 @@ interface StoreCore<K, V> {
     suspend fun get(key: K): V?
 
     /**
+     * Takes a list of keys and returns list of matching values.
+     *
+     * @return All found values matching the keys, or empty list if no value is found.
+     */
+    suspend fun get(keys: List<K>): List<V>
+
+    /**
      * Takes a key and returns a Flow that emits any matching current item, and all future items
      * with the key.
      *

@@ -22,6 +22,10 @@ abstract class RoomStoreCore<K, V, E>(
         return dao.get(key)?.let(fromEntity)
     }
 
+    override suspend fun get(keys: List<K>): List<V> {
+        return dao.get(keys).map { fromEntity(it) }
+    }
+
     override fun getStream(key: K): Flow<V> {
         return dao.getStream(key)
             .distinctUntilChanged()
