@@ -6,6 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -24,12 +25,20 @@ class CachingStoreCore<K, V>(
     private val lock = Mutex(false)
 
     init {
-        // Permanent subscription to all updates to keep cache up-to-date
+        // Permanent subscription to all updates to keep cache up-to-date. This can't achieved with
+        // put/delete methods as it's not given that a core isn't modified without going through
+        // this cache.
         GlobalScope.launch(Dispatchers.Default) {
             persistingCore
-                .getInsertStream()
+                .getPutStream()
                 .collect { value ->
                     lock.withLock { cacheCore.put(getKey(value), value) }
+                }
+
+            persistingCore
+                .getDeleteStream()
+                .collect { key ->
+                    lock.withLock { cacheCore.delete(key) }
                 }
         }
     }
@@ -55,10 +64,9 @@ class CachingStoreCore<K, V>(
 
     override fun getStream(key: K): Flow<V> {
         return persistingCore.getStream(key)
-    }
-
-    override fun getInsertStream(): Flow<V> {
-        return persistingCore.getInsertStream()
+            .onEach {
+                lock.withLock { cacheCore.put(key, it) }
+            }
     }
 
     override suspend fun getAll(): List<V> {
@@ -77,10 +85,15 @@ class CachingStoreCore<K, V>(
         return persistingCore.put(items)
     }
 
+    override fun getPutStream(): Flow<V> {
+        return persistingCore.getPutStream()
+    }
+
     override suspend fun delete(key: K): Boolean {
-        return lock.withLock {
-            persistingCore.delete(key)
-                .also { cacheCore.delete(key) }
-        }
+        return persistingCore.delete(key)
+    }
+
+    override fun getDeleteStream(): Flow<K> {
+        return persistingCore.getDeleteStream()
     }
 }

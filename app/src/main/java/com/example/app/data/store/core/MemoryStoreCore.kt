@@ -23,8 +23,11 @@ open class MemoryStoreCore<K, V>(
     // All values in the store
     private val cache = ConcurrentHashMap<K, V>()
 
-    // Flow of all values
-    private val stream = ConflatedBroadcastChannel<V>()
+    // Flow of all updated values
+    private val putStream = ConflatedBroadcastChannel<V>()
+
+    // Flow of all deleted keys
+    private val deleteStream = ConflatedBroadcastChannel<K>()
 
     // Listeners for given keys
     private val listeners = ConcurrentHashMap<K, ConflatedBroadcastChannel<V>>()
@@ -46,16 +49,12 @@ open class MemoryStoreCore<K, V>(
         }
     }
 
-    override fun getInsertStream(): Flow<V> {
-        return stream.asFlow()
-    }
-
     override suspend fun getAll(): List<V> {
         return cache.values.toList()
     }
 
     override fun getAllStream(): Flow<List<V>> {
-        return stream.asFlow()
+        return putStream.asFlow()
             .map { getAll() }
     }
 
@@ -71,7 +70,7 @@ open class MemoryStoreCore<K, V>(
         }
 
         cache[key] = newValue
-        stream.send(newValue)
+        putStream.send(newValue)
         listeners[key]?.send(newValue)
 
         lock.unlock()
@@ -82,10 +81,22 @@ open class MemoryStoreCore<K, V>(
         return items.mapNotNull { (key, value) -> put(key, value) }
     }
 
+    override fun getPutStream(): Flow<V> {
+        return putStream.asFlow()
+    }
+
     override suspend fun delete(key: K): Boolean {
-        return lock.withLock {
-            cache.remove(key) != null
-        }
+        lock.lock()
+
+        val deleted = cache.remove(key) != null
+        if (deleted) deleteStream.send(key)
+
+        lock.unlock()
+        return deleted
+    }
+
+    override fun getDeleteStream(): Flow<K> {
+        return deleteStream.asFlow()
     }
 
     private fun getOrCreateChannel(key: K): BroadcastChannel<V> {

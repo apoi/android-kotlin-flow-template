@@ -16,7 +16,9 @@ abstract class RoomStoreCore<K, V, E>(
     private val coreProxy: StoreCore<K, E>
 ) : StoreCore<K, V> {
 
-    private val insertStream = ConflatedBroadcastChannel<V>()
+    private val putStream = ConflatedBroadcastChannel<V>()
+
+    private val deleteStream = ConflatedBroadcastChannel<K>()
 
     override suspend fun get(key: K): V? {
         return coreProxy.get(key)?.let(fromEntity)
@@ -32,10 +34,6 @@ abstract class RoomStoreCore<K, V, E>(
             .map { fromEntity(it) }
     }
 
-    override fun getInsertStream(): Flow<V> {
-        return insertStream.asFlow()
-    }
-
     override suspend fun getAll(): List<V> {
         return coreProxy.getAll()
             .map(fromEntity)
@@ -49,16 +47,25 @@ abstract class RoomStoreCore<K, V, E>(
     override suspend fun put(key: K, value: V): V? {
         return coreProxy.put(key, toEntity(value))
             ?.let(fromEntity)
-            ?.also { insertStream.send(it) }
+            ?.also { putStream.send(it) }
     }
 
     override suspend fun put(items: Map<K, V>): List<V> {
         return coreProxy.put(items.mapValues { toEntity(it.value) })
             .map(fromEntity)
-            .also { values -> values.forEach { insertStream.send(it) } }
+            .also { values -> values.forEach { putStream.send(it) } }
+    }
+
+    override fun getPutStream(): Flow<V> {
+        return putStream.asFlow()
     }
 
     override suspend fun delete(key: K): Boolean {
         return coreProxy.delete(key)
+            .also { if (it) deleteStream.send(key) }
+    }
+
+    override fun getDeleteStream(): Flow<K> {
+        return deleteStream.asFlow()
     }
 }

@@ -45,13 +45,6 @@ interface StoreCore<K, V> {
     fun getStream(key: K): Flow<V>
 
     /**
-     * Returns a Flow that emits every time an insert has been performed.
-     *
-     * @return Flow with values that have been updated in the store.
-     */
-    fun getInsertStream(): Flow<V>
-
-    /**
      * Returns all values currently stored values.
      *
      * @return All stored values.
@@ -82,12 +75,26 @@ interface StoreCore<K, V> {
     suspend fun put(items: Map<K, V>): List<V>
 
     /**
+     * Returns a Flow that emits every time put has been performed.
+     *
+     * @return Flow with values that have been updated in the store.
+     */
+    fun getPutStream(): Flow<V>
+
+    /**
      * Takes a key to be deleted, and returns success status of the operation.
      *
      * @param key Key of the persisted item.
      * @return True if value was deleted, and false otherwise.
      */
     suspend fun delete(key: K): Boolean
+
+    /**
+     * Returns a Flow that emits every time delete has been performed.
+     *
+     * @return Flow with keys that have been deleted in the store.
+     */
+    fun getDeleteStream(): Flow<K>
 
     /**
      * Merges the values and returns flag whether the return value differs from old value.

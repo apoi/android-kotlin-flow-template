@@ -8,5 +8,7 @@ import com.example.app.data.store.StoreCore
  */
 abstract class RoomDaoProxy<K, V> : StoreCore<K, V> {
 
-    override fun getInsertStream() = error("Not implemented")
+    override fun getPutStream() = error("Not implemented")
+
+    override fun getDeleteStream() = error("Not implemented")
 }

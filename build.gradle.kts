@@ -34,6 +34,7 @@ subprojects {
 
     detekt {
         config = rootProject.files("config/detekt/detekt.yml")
+        baseline = rootProject.file("config/detekt/baseline.xml")
         parallel = true
         reports {
             html {
