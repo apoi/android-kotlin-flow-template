@@ -69,17 +69,17 @@ interface StoreCore<K, V> {
      * Takes an identifier to be added, and returns success status of the operation.
      *
      * @param key Key of the persisted item.
-     * @return True if value was added, and false otherwise.
+     * @return Inserted value if it was changed, and null otherwise.
      */
-    suspend fun put(key: K, value: V): Boolean
+    suspend fun put(key: K, value: V): V?
 
     /**
      * Takes an identifier to be added, and returns success status of the operation.
      *
      * @param items Map of items to insert.
-     * @return True if any value was added, false otherwise.
+     * @return List of all values that were changed.
      */
-    suspend fun put(items: Map<K, V>): Boolean
+    suspend fun put(items: Map<K, V>): List<V>
 
     /**
      * Takes a key to be deleted, and returns success status of the operation.

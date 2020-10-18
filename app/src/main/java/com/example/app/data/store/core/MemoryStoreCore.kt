@@ -59,7 +59,7 @@ open class MemoryStoreCore<K, V>(
             .map { getAll() }
     }
 
-    override suspend fun put(key: K, value: V): Boolean {
+    override suspend fun put(key: K, value: V): V? {
         lock.lock()
 
         val (newValue, valuesDiffer) = mergeValues(cache[key], value, merger)
@@ -67,7 +67,7 @@ open class MemoryStoreCore<K, V>(
         if (!valuesDiffer) {
             // Data is already up to date
             lock.unlock()
-            return false
+            return null
         }
 
         cache[key] = newValue
@@ -75,13 +75,11 @@ open class MemoryStoreCore<K, V>(
         listeners[key]?.send(newValue)
 
         lock.unlock()
-        return true
+        return newValue
     }
 
-    override suspend fun put(items: Map<K, V>): Boolean {
-        return items.map { (key, value) ->
-            put(key, value)
-        }.any()
+    override suspend fun put(items: Map<K, V>): List<V> {
+        return items.mapNotNull { (key, value) -> put(key, value) }
     }
 
     override suspend fun delete(key: K): Boolean {

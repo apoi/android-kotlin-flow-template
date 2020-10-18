@@ -1,28 +1,12 @@
 package com.example.app.data.store.core
 
-import kotlinx.coroutines.flow.Flow
+import com.example.app.data.store.StoreCore
 
 /**
  * Interface for accessing a DAO that implements methods required for a StoreCore. DAO proxies are
- * needed as Room DAOs can't have abstract parent classes that would define the interface.
- *
- * This interface is different from StoreCore in that the put methods return the merged value.
+ * needed as Room DAOs can't have abstract parent classes that would define the core interface.
  */
-interface RoomDaoProxy<in K, E> {
+abstract class RoomDaoProxy<K, V> : StoreCore<K, V> {
 
-    suspend fun get(key: K): E?
-
-    suspend fun get(keys: List<K>): List<E>
-
-    fun getStream(key: K): Flow<E>
-
-    suspend fun getAll(): List<E>
-
-    fun getAllStream(): Flow<List<E>>
-
-    suspend fun put(value: E): E?
-
-    suspend fun put(values: List<E>): List<E>
-
-    suspend fun delete(key: K): Int
+    override fun getInsertStream() = error("Not implemented")
 }

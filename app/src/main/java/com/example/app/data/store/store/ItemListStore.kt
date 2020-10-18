@@ -38,13 +38,13 @@ open class ItemListStore<I, K, V : Any>(
     override suspend fun put(values: List<V>): Boolean {
         // Put values first in case there's a listener for the index. This way values
         // already exist for any listeners to query.
-        val valueChanged = values
+        val newValues = values
             .map { value -> Pair(keyForValue(value), value) }
             .let { items -> valueCore.put(items.toMap()) }
 
         val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(keyForValue)))
 
-        return valueChanged || indexChanged
+        return newValues.isNotEmpty() || indexChanged != null
     }
 
     /**

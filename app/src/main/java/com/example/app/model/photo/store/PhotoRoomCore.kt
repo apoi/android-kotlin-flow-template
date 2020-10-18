@@ -17,7 +17,7 @@ class PhotoRoomCore(
 private class PhotoDaoProxy(
     private val dao: PhotoDao,
     private val merger: Merger<PhotoEntity>
-) : RoomDaoProxy<Int, PhotoEntity> {
+) : RoomDaoProxy<Int, PhotoEntity>() {
 
     override suspend fun get(key: Int) = dao.get(key)
 
@@ -29,9 +29,9 @@ private class PhotoDaoProxy(
 
     override fun getAllStream() = dao.getAllStream()
 
-    override suspend fun put(value: PhotoEntity) = dao.put(value, merger)
+    override suspend fun put(key: Int, value: PhotoEntity) = dao.put(value, merger)
 
-    override suspend fun put(values: List<PhotoEntity>) = dao.put(values, merger)
+    override suspend fun put(items: Map<Int, PhotoEntity>) = dao.put(items.values.toList(), merger)
 
-    override suspend fun delete(key: Int) = dao.delete(key)
+    override suspend fun delete(key: Int) = dao.delete(key) > 0
 }

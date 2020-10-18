@@ -18,7 +18,7 @@ open class DefaultStore<in K, V>(
     }
 
     override suspend fun put(value: V): Boolean {
-        return core.put(getKey(value), value)
+        return core.put(getKey(value), value) != null
     }
 
     override suspend fun delete(key: K): Boolean {

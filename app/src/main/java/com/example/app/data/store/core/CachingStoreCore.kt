@@ -69,11 +69,11 @@ class CachingStoreCore<K, V>(
         return persistingCore.getAllStream()
     }
 
-    override suspend fun put(key: K, value: V): Boolean {
+    override suspend fun put(key: K, value: V): V? {
         return persistingCore.put(key, value)
     }
 
-    override suspend fun put(items: Map<K, V>): Boolean {
+    override suspend fun put(items: Map<K, V>): List<V> {
         return persistingCore.put(items)
     }
 

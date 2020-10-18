@@ -20,11 +20,11 @@ abstract class IdListDao : CoreDao<String, IdListEntity>(
 
     @Transaction
     open suspend fun get(keys: List<String>): List<IdListEntity> {
-        return getBatch(keys, ::getLimited)
+        return getBatch(keys, ::getList)
     }
 
     @Query("SELECT * FROM lists WHERE id IN (:keys)")
-    abstract suspend fun getLimited(keys: List<String>): List<IdListEntity>
+    abstract suspend fun getList(keys: List<String>): List<IdListEntity>
 
     @Query("SELECT * FROM lists WHERE id=:key")
     abstract fun getStream(key: String): Flow<IdListEntity>
@@ -48,7 +48,7 @@ abstract class IdListDao : CoreDao<String, IdListEntity>(
         values: List<IdListEntity>,
         merger: Merger<IdListEntity>
     ): List<IdListEntity> {
-        return putBatch(values, ::getLimited)
+        return putBatch(values, ::getList)
     }
 
     @Query("DELETE FROM lists WHERE id=:key")

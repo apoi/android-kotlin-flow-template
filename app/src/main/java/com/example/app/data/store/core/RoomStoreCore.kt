@@ -13,21 +13,21 @@ import kotlinx.coroutines.flow.map
 abstract class RoomStoreCore<K, V, E>(
     private val fromEntity: (E) -> V,
     private val toEntity: (V) -> E,
-    private val dao: RoomDaoProxy<K, E>
+    private val coreProxy: StoreCore<K, E>
 ) : StoreCore<K, V> {
 
     private val insertStream = ConflatedBroadcastChannel<V>()
 
     override suspend fun get(key: K): V? {
-        return dao.get(key)?.let(fromEntity)
+        return coreProxy.get(key)?.let(fromEntity)
     }
 
     override suspend fun get(keys: List<K>): List<V> {
-        return dao.get(keys).map { fromEntity(it) }
+        return coreProxy.get(keys).map { fromEntity(it) }
     }
 
     override fun getStream(key: K): Flow<V> {
-        return dao.getStream(key)
+        return coreProxy.getStream(key)
             .distinctUntilChanged()
             .map { fromEntity(it) }
     }
@@ -37,28 +37,28 @@ abstract class RoomStoreCore<K, V, E>(
     }
 
     override suspend fun getAll(): List<V> {
-        return dao.getAll()
+        return coreProxy.getAll()
             .map(fromEntity)
     }
 
     override fun getAllStream(): Flow<List<V>> {
-        return dao.getAllStream()
+        return coreProxy.getAllStream()
             .map { it.map(fromEntity) }
     }
 
-    override suspend fun put(key: K, value: V): Boolean {
-        return dao.put(toEntity(value))
+    override suspend fun put(key: K, value: V): V? {
+        return coreProxy.put(key, toEntity(value))
             ?.let(fromEntity)
-            ?.let { insertStream.send(it) } != null
+            ?.also { insertStream.send(it) }
     }
 
-    override suspend fun put(items: Map<K, V>): Boolean {
-        val updated = dao.put(items.values.map(toEntity))
-        updated.map(fromEntity).forEach { insertStream.send(it) }
-        return updated.isNotEmpty()
+    override suspend fun put(items: Map<K, V>): List<V> {
+        return coreProxy.put(items.mapValues { toEntity(it.value) })
+            .map(fromEntity)
+            .also { values -> values.forEach { insertStream.send(it) } }
     }
 
     override suspend fun delete(key: K): Boolean {
-        return dao.delete(key) > 0
+        return coreProxy.delete(key)
     }
 }
