@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.app.R
@@ -43,21 +42,24 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
      */
     private fun setupBottomNavigationBar() {
         // Setup the bottom navigation view with a list of navigation graphs
+        val graphs = listOf(
+            R.navigation.simple_album_nav,
+            R.navigation.lazy_album_nav,
+            R.navigation.about_nav
+        )
+
         val controller = binding.mainBottomNav.setupWithNavController(
-            navGraphIds = listOf(R.navigation.list_nav, R.navigation.about_nav),
+            navGraphIds = graphs,
             fragmentManager = supportFragmentManager,
             containerId = R.id.main_nav_container,
             intent = intent
         )
 
         // Whenever the selected controller changes, setup action bar and other changes
-        controller.observe(
-            this,
-            Observer { navController ->
-                setupFullscreenHandler(navController)
-                setupActionBarWithNavController(navController)
-            }
-        )
+        controller.observe(this) { navController ->
+            setupFullscreenHandler(navController)
+            setupActionBarWithNavController(navController)
+        }
 
         currentNavController = controller
     }

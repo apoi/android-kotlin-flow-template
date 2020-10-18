@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/list"
+        android:id="@+id/simple_album"
+        android:icon="@drawable/ic_list"
+        android:contentDescription="@string/album_description"
+        android:title="@string/album_title" />
+    <item
+        android:id="@+id/lazy_album"
         android:icon="@drawable/ic_list"
         android:contentDescription="@string/album_description"
         android:title="@string/album_title" />

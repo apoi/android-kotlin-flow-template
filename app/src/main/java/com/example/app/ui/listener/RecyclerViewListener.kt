@@ -4,7 +4,7 @@ import android.content.Context
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.recyclerview.widget.RecyclerView
-import com.example.app.ui.adapter.ListAdapter
+import com.example.app.ui.adapter.simple.ListAdapter
 
 class RecyclerViewListener(
     context: Context,

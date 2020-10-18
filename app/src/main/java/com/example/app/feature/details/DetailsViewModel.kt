@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.app.model.photo.Photo
-import com.example.app.model.photo.store.PhotoStore
+import com.example.app.domain.photo.Photo
+import com.example.app.domain.photo.store.PhotoStore
 import kotlinx.coroutines.launch
 
 class DetailsViewModel(

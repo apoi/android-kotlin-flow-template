@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/simple_album"
+    app:startDestination="@id/simple_album_fragment">
+
+    <fragment
+        android:id="@+id/simple_album_fragment"
+        android:name="com.example.app.feature.album.simple.AlbumFragment"
+        android:label="@string/album_title"
+        tools:layout="@layout/album_fragment">
+
+        <action
+            android:id="@+id/list_to_photo"
+            app:destination="@id/details_fragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/details_fragment"
+        android:name="com.example.app.feature.details.DetailsFragment"
+        android:label="@string/details_title"
+        tools:layout="@layout/details_fragment" />
+
+</navigation>

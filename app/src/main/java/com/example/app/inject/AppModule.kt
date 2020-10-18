@@ -5,15 +5,16 @@ import com.example.app.data.room.DATABASE_NAME
 import com.example.app.data.room.Database
 import com.example.app.data.store.StoreCore
 import com.example.app.data.store.core.CachingStoreCore
-import com.example.app.feature.album.AlbumViewModel
+import com.example.app.domain.idlist.IdList
+import com.example.app.domain.idlist.store.IdListRoomCore
+import com.example.app.domain.photo.Photo
+import com.example.app.domain.photo.repository.PhotoListRepository
+import com.example.app.domain.photo.store.PhotoListStore
+import com.example.app.domain.photo.store.PhotoRoomCore
+import com.example.app.domain.photo.store.PhotoStore
+import com.example.app.feature.album.lazy.LazyAlbumViewModel
+import com.example.app.feature.album.simple.AlbumViewModel
 import com.example.app.feature.details.DetailsViewModel
-import com.example.app.model.idlist.IdList
-import com.example.app.model.idlist.store.IdListRoomCore
-import com.example.app.model.photo.Photo
-import com.example.app.model.photo.repository.PhotoListRepository
-import com.example.app.model.photo.store.PhotoListStore
-import com.example.app.model.photo.store.PhotoRoomCore
-import com.example.app.model.photo.store.PhotoStore
 import com.example.app.network.NetworkConfig
 import com.example.app.network.PhotoApi
 import com.example.app.network.result.ResultCallAdapterFactory
@@ -84,5 +85,6 @@ val appModule = module {
     factory { PhotoListRepository(get(), get()) }
 
     viewModel { AlbumViewModel(get()) }
+    viewModel { LazyAlbumViewModel(get(), get()) }
     viewModel { (id: Int) -> DetailsViewModel(id, get()) }
 }
