@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.data.state.State
 import com.example.app.databinding.AlbumFragmentBinding
-import com.example.app.feature.MainActivity
 import com.example.app.feature.album.lazy.adapter.LazyAlbumItemModel
 import com.example.app.feature.album.lazy.adapter.LazyAlbumTypeFactory
 import com.example.app.navigation.NavParams
@@ -60,10 +59,10 @@ class LazyAlbumFragment : BaseFragment(R.layout.album_fragment) {
     private fun onItemSelected(photo: LazyAlbumItemModel) {
         findNavController()
             .navigate(
-                R.id.list_to_photo,
+                R.id.lazy_album_to_details,
                 bundleOf(
                     NavParams.ID to photo.id,
-                    MainActivity.FULLSCREEN to true
+                    NavParams.FULLSCREEN to true
                 )
             )
     }

@@ -12,13 +12,13 @@
         tools:layout="@layout/album_fragment">
 
         <action
-            android:id="@+id/list_to_photo"
-            app:destination="@id/details_fragment" />
+            android:id="@+id/lazy_album_to_details"
+            app:destination="@id/lazy_details_fragment" />
 
     </fragment>
 
     <fragment
-        android:id="@+id/details_fragment"
+        android:id="@+id/lazy_details_fragment"
         android:name="com.example.app.feature.details.DetailsFragment"
         android:label="@string/details_title"
         tools:layout="@layout/details_fragment" />

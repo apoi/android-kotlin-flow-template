@@ -6,8 +6,11 @@
     <string name="home_title">Home</string>
     <string name="home_description">Home</string>
 
-    <string name="album_title">Album</string>
-    <string name="album_description">Album</string>
+    <string name="lazy_album_title">Lazy</string>
+    <string name="lazy_album_description">Lazy</string>
+
+    <string name="simple_album_title">Simple</string>
+    <string name="simple_album_description">Simple</string>
 
     <string name="details_title">Details</string>
     <string name="details_description">Details</string>

@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.app.R
 import com.example.app.databinding.MainActivityBinding
+import com.example.app.navigation.NavParams
 import com.example.app.navigation.setupWithNavController
 import com.example.app.util.viewBinding
 
@@ -43,8 +44,8 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     private fun setupBottomNavigationBar() {
         // Setup the bottom navigation view with a list of navigation graphs
         val graphs = listOf(
-            R.navigation.simple_album_nav,
             R.navigation.lazy_album_nav,
+            R.navigation.simple_album_nav,
             R.navigation.about_nav
         )
 
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
     }
 
     private val fullscreenListener = NavController.OnDestinationChangedListener { _, _, arguments ->
-        setFullscreen(arguments?.getBoolean(FULLSCREEN) == true)
+        setFullscreen(arguments?.getBoolean(NavParams.FULLSCREEN) == true)
     }
 
     private fun setFullscreen(fullscreen: Boolean) {
@@ -98,9 +99,5 @@ class MainActivity : AppCompatActivity(R.layout.main_activity) {
                 statusBarColor = resources.getColor(R.color.colorPrimaryDark, null)
             }
         }
-    }
-
-    companion object {
-        const val FULLSCREEN = "fullscreen"
     }
 }
