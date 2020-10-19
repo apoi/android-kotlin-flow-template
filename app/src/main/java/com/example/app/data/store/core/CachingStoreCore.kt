@@ -6,7 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -44,11 +46,13 @@ class CachingStoreCore<K, V>(
     }
 
     override suspend fun get(key: K): V? {
+        val cached = cacheCore.get(key)
+        if (cached != null) return cached
+
         return lock.withLock {
-            cacheCore.get(key)
-                ?: persistingCore.get(key)?.also { value ->
-                    cacheCore.put(key, value)
-                }
+            persistingCore.get(key)?.also { value ->
+                cacheCore.put(key, value)
+            }
         }
     }
 
@@ -57,16 +61,17 @@ class CachingStoreCore<K, V>(
         if (keys.size == cached.size) return cached
 
         return lock.withLock {
-            persistingCore.get(keys)
-                .also { cacheCore.put(it.associateBy(getKey)) }
+            persistingCore.get(keys).also { values ->
+                cacheCore.put(values.associateBy(getKey))
+            }
         }
     }
 
     override fun getStream(key: K): Flow<V> {
         return persistingCore.getStream(key)
-            .onEach {
-                lock.withLock { cacheCore.put(key, it) }
-            }
+            .onEach { lock.withLock { cacheCore.put(key, it) } }
+            .onStart { cacheCore.get(key)?.let { emit(it) } }
+            .distinctUntilChanged()
     }
 
     override suspend fun getAll(): List<V> {
