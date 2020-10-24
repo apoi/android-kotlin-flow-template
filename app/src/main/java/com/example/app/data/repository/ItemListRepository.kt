@@ -1,6 +1,6 @@
 package com.example.app.data.repository
 
-import com.example.app.data.api.SingleFetcher
+import com.example.app.data.fetcher.SingleFetcher
 import com.example.app.data.store.store.ItemListStore
 import com.example.app.network.result.ApiResult
 import kotlinx.coroutines.flow.Flow

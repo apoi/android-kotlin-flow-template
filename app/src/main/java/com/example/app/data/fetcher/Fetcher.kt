@@ -1,4 +1,4 @@
-package com.example.app.data.api
+package com.example.app.data.fetcher
 
 import com.example.app.network.result.ApiResult
 import java.util.concurrent.ConcurrentHashMap
