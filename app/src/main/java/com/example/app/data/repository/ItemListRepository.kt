@@ -1,8 +1,8 @@
 package com.example.app.data.repository
 
-import com.example.app.data.api.SingleApi
+import com.example.app.data.api.SingleFetcher
 import com.example.app.data.store.store.ItemListStore
-import com.example.app.network.result.Result
+import com.example.app.network.result.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
  */
 open class ItemListRepository<in I, K, V : Any>(
     private val store: ItemListStore<I, K, V>,
-    private val api: SingleApi<List<V>>
+    private val fetcher: SingleFetcher<List<V>>
 ) : Repository<I, List<V>>() {
 
     override suspend fun persist(value: List<V>) {
@@ -28,7 +28,7 @@ open class ItemListRepository<in I, K, V : Any>(
         return store.getStream()
     }
 
-    override suspend fun fetchRemote(key: I): Result<List<V>> {
-        return api.fetch()
+    override suspend fun fetchRemote(key: I): ApiResult<List<V>> {
+        return fetcher.fetch()
     }
 }

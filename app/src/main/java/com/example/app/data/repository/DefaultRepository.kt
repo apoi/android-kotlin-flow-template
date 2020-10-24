@@ -1,13 +1,13 @@
 package com.example.app.data.repository
 
-import com.example.app.data.api.Api
+import com.example.app.data.api.Fetcher
 import com.example.app.data.store.Store
-import com.example.app.network.result.Result
+import com.example.app.network.result.ApiResult
 import kotlinx.coroutines.flow.Flow
 
 open class DefaultRepository<in K, V>(
     private val store: Store<K, V>,
-    private val api: Api<K, V>
+    private val fetcher: Fetcher<K, V>
 ) : Repository<K, V>() {
 
     override suspend fun persist(value: V) {
@@ -22,7 +22,7 @@ open class DefaultRepository<in K, V>(
         return store.getStream(key)
     }
 
-    override suspend fun fetchRemote(key: K): Result<V> {
-        return api.fetch(key)
+    override suspend fun fetchRemote(key: K): ApiResult<V> {
+        return fetcher.fetch(key)
     }
 }

@@ -17,7 +17,7 @@ class ResultCallAdapterFactory : CallAdapter.Factory() {
         val resultType = getParameterUpperBound(0, responseType as ParameterizedType)
 
         return if (getRawType(returnType) == Call::class.java &&
-            getRawType(responseType) == Result::class.java
+            getRawType(responseType) == ApiResult::class.java
         ) {
             ResultAdapter(resultType)
         } else {

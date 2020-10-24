@@ -1,7 +1,7 @@
 package com.example.app.data.repository
 
 import com.example.app.data.state.State
-import com.example.app.network.result.Result
+import com.example.app.network.result.ApiResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
@@ -37,7 +37,7 @@ abstract class Repository<in K, V> {
 
             if (!isValid) {
                 when (val response = fetchRemote(key)) {
-                    is Result.Success -> {
+                    is ApiResult.Success -> {
                         if (response.value != null) {
                             // Response is persisted to be emitted later
                             persist(response.value)
@@ -47,9 +47,9 @@ abstract class Repository<in K, V> {
                         }
                     }
                     // State can be expanded for more detailed error types
-                    is Result.HttpError -> emit(State.Error(response.error))
-                    is Result.NetworkError -> emit(State.Error(response.error))
-                    is Result.UnknownError -> emit(State.Error(response.error))
+                    is ApiResult.HttpError -> emit(State.Error(response.error))
+                    is ApiResult.NetworkError -> emit(State.Error(response.error))
+                    is ApiResult.UnknownError -> emit(State.Error(response.error))
                 }
             }
 
@@ -69,5 +69,5 @@ abstract class Repository<in K, V> {
 
     protected abstract fun getLocalStream(key: K): Flow<V>
 
-    protected abstract suspend fun fetchRemote(key: K): Result<V>
+    protected abstract suspend fun fetchRemote(key: K): ApiResult<V>
 }

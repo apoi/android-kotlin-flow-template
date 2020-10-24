@@ -6,9 +6,9 @@ import retrofit2.CallAdapter
 
 class ResultAdapter(
     private val type: Type
-) : CallAdapter<Type, Call<Result<Type>>> {
+) : CallAdapter<Type, Call<ApiResult<Type>>> {
 
     override fun responseType() = type
 
-    override fun adapt(call: Call<Type>): Call<Result<Type>> = ResultDelegate(call)
+    override fun adapt(call: Call<Type>): Call<ApiResult<Type>> = ResultDelegate(call)
 }
