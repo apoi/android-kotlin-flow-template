@@ -2,7 +2,9 @@ package com.example.app.data.store
 
 import kotlinx.coroutines.flow.Flow
 
-typealias Merger<V> = (V?, V) -> V
+// Function for merging old value with new value before persisting. Simplest merge function is to
+// always pick the new value, but depending on your models a more complex merge may be needed.
+typealias Merger<V> = (V, V) -> V
 
 /**
  * StoreCore is the underlying persistence mechanism of a store. It is not mandatory for a store to
@@ -16,8 +18,8 @@ typealias Merger<V> = (V?, V) -> V
  * One StoreCore can be shared between multiple stores. StoreCore is the single source of truth
  * for the data it contains.
  *
- * @param <K> Type of keys
- * @param <V> Type of values
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
  */
 interface StoreCore<K, V> {
 
@@ -75,7 +77,7 @@ interface StoreCore<K, V> {
     suspend fun put(items: Map<K, V>): List<V>
 
     /**
-     * Returns a Flow that emits every time put has been performed.
+     * Returns a Flow that emits every value that has been put.
      *
      * @return Flow with values that have been updated in the store.
      */
@@ -90,7 +92,7 @@ interface StoreCore<K, V> {
     suspend fun delete(key: K): Boolean
 
     /**
-     * Returns a Flow that emits every time delete has been performed.
+     * Returns a Flow that emits the key of every item that has been deleted.
      *
      * @return Flow with keys that have been deleted in the store.
      */
@@ -106,7 +108,15 @@ interface StoreCore<K, V> {
     companion object {
 
         /**
-         * Merge implementation. Needs to be companion for DAO access.
+         * Merge implementation that compares old and new values, and merges the values with the
+         * provided merge function if values differ.
+         *
+         * @param old Old value, or null if value doesn't exist yet.
+         * @param new New value.
+         * @param merger Merge function for merging old and new values together.
+         *
+         * @return Pair of new value and a boolean flag telling if the new value is different from
+         * the provided old value.
          */
         fun <V> merge(old: V?, new: V, merger: Merger<V>): Pair<V, Boolean> {
             return when (old) {

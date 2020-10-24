@@ -4,10 +4,16 @@ import com.example.app.data.store.Store
 import com.example.app.data.store.StoreCore
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Default implementation of a store.
+ *
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
+ */
 open class DefaultStore<in K, V>(
     private val core: StoreCore<K, V>,
     private val getKey: (V) -> K
-) : Store<K, V, V?> {
+) : Store<K, V> {
 
     override suspend fun get(key: K): V? {
         return core.get(key)

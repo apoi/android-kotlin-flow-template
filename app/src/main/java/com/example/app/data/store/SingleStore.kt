@@ -4,10 +4,13 @@ import kotlinx.coroutines.flow.Flow
 
 /**
  * Store for a single item. Useful for representing lists of values.
+ *
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
  */
-interface SingleStore<V, out R> {
+interface SingleStore<K, V> {
 
-    suspend fun get(): R
+    suspend fun get(): V
 
     fun getStream(): Flow<V>
 

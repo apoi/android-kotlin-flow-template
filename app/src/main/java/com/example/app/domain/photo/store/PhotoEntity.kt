@@ -21,7 +21,7 @@ data class PhotoEntity(
 
     companion object {
         val merger: Merger<PhotoEntity> = { old, new ->
-            fromPhoto(Photo.merger(old?.toPhoto(), new.toPhoto()))
+            fromPhoto(Photo.merger(old.toPhoto(), new.toPhoto()))
         }
 
         fun fromPhoto(photo: Photo): PhotoEntity {

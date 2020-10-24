@@ -6,7 +6,7 @@ import com.example.app.network.result.Result
 import kotlinx.coroutines.flow.Flow
 
 open class DefaultRepository<in K, V>(
-    private val store: Store<K, V, V?>,
+    private val store: Store<K, V>,
     private val api: Api<K, V>
 ) : Repository<K, V>() {
 

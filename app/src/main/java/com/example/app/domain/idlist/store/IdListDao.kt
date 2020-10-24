@@ -5,11 +5,12 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.TypeConverters
 import com.example.app.data.room.CoreDao
+import com.example.app.data.room.converter.IntListConverter
 import com.example.app.data.store.Merger
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-@TypeConverters(IntListConverters::class)
+@TypeConverters(IntListConverter::class)
 abstract class IdListDao : CoreDao<String, IdListEntity>(
     IdListEntity::id,
     IdListEntity.merger

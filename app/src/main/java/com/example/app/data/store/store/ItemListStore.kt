@@ -10,11 +10,13 @@ import kotlinx.coroutines.flow.map
  * Store for lists of items. Keeps index of the items in one core, and items themselves in another
  * core. This allows each item to exist in multiple indexes and be queried independently.
  *
- * @param
+ * @param <I> Type of index keys.
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
  */
 open class ItemListStore<I, K, V : Any>(
     private val indexKey: I,
-    private val keyForValue: (V) -> K,
+    private val getKey: (V) -> K,
     private val indexCore: StoreCore<I, ItemList<I, K>>,
     private val valueCore: StoreCore<K, V>
 ) : SingleStore<List<V>, List<V>> {
@@ -39,10 +41,10 @@ open class ItemListStore<I, K, V : Any>(
         // Put values first in case there's a listener for the index. This way values
         // already exist for any listeners to query.
         val newValues = values
-            .map { value -> Pair(keyForValue(value), value) }
+            .map { value -> Pair(getKey(value), value) }
             .let { items -> valueCore.put(items.toMap()) }
 
-        val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(keyForValue)))
+        val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(getKey)))
 
         return newValues.isNotEmpty() || indexChanged != null
     }

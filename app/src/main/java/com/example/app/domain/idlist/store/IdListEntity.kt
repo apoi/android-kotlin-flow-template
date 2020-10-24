@@ -4,12 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.app.data.room.converter.IntListConverter
 import com.example.app.data.store.Merger
 import com.example.app.data.store.StoreCore
 import com.example.app.domain.idlist.IdList
 
 @Entity(tableName = "lists")
-@TypeConverters(IntListConverters::class)
+@TypeConverters(IntListConverter::class)
 class IdListEntity(
     @PrimaryKey val id: String,
     @ColumnInfo(name = "values") val values: List<Int>
@@ -20,8 +21,6 @@ class IdListEntity(
     }
 
     companion object {
-        const val SEPARATOR = ","
-
         val merger: Merger<IdListEntity> = StoreCore.takeNew()
 
         fun fromIdList(idList: IdList): IdListEntity {

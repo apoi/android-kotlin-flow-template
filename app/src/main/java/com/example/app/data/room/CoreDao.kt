@@ -5,6 +5,9 @@ import androidx.room.OnConflictStrategy
 import com.example.app.data.store.Merger
 import com.example.app.data.store.StoreCore
 
+/**
+ * DAO base class implementing value merging and batch operations.
+ */
 abstract class CoreDao<K, V>(
     private val getKey: (V) -> K,
     private val merger: Merger<V>

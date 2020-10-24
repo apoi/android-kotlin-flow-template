@@ -10,7 +10,7 @@ class PhotoListStore(
     photoStoreCore: StoreCore<Int, Photo>
 ) : ItemListStore<String, Int, Photo>(
     indexKey = KEY,
-    keyForValue = Photo::id,
+    getKey = Photo::id,
     indexCore = indexStoreCore,
     valueCore = photoStoreCore
 ) {

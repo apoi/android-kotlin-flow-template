@@ -9,9 +9,15 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Shared implementation for StoreCores with Room as the backing store.
+ *
+ * @param <K> Type of keys.
+ * @param <V> Type of values. Value is the domain model.
+ * @param <E> Type of entities. Entity is the database representation of value.
  */
 abstract class RoomStoreCore<K, V, E>(
+    // Mapper from entity to value
     private val fromEntity: (E) -> V,
+    // Mapper from value to entity
     private val toEntity: (V) -> E,
     private val coreProxy: StoreCore<K, E>
 ) : StoreCore<K, V> {
