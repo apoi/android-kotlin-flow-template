@@ -27,7 +27,7 @@ class AlbumViewModel(
     }
 
     private fun getPhotos(): Flow<State<List<AlbumItemModel>>> {
-        return repository.getStream("")
+        return repository.getStream()
             .map {
                 when (it) {
                     State.Loading -> State.Loading

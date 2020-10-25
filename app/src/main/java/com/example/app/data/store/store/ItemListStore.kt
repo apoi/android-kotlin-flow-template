@@ -1,6 +1,6 @@
 package com.example.app.data.store.store
 
-import com.example.app.data.repository.ItemList
+import com.example.app.data.repository.repository.ItemList
 import com.example.app.data.store.SingleStore
 import com.example.app.data.store.StoreCore
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ open class ItemListStore<I, K, V : Any>(
     private val getKey: (V) -> K,
     private val indexCore: StoreCore<I, ItemList<I, K>>,
     private val valueCore: StoreCore<K, V>
-) : SingleStore<List<V>, List<V>> {
+) : SingleStore<List<V>> {
 
     override suspend fun get(): List<V> {
         return withContext(Dispatchers.IO) {

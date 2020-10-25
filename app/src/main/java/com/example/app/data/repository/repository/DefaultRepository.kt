@@ -1,6 +1,7 @@
-package com.example.app.data.repository
+package com.example.app.data.repository.repository
 
 import com.example.app.data.fetcher.Fetcher
+import com.example.app.data.repository.Repository
 import com.example.app.data.store.Store
 import com.example.app.network.result.ApiResult
 import kotlinx.coroutines.flow.Flow

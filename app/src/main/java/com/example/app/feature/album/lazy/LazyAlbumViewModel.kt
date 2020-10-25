@@ -29,7 +29,7 @@ class LazyAlbumViewModel(
     }
 
     private fun getPhotos(): Flow<State<List<LazyAlbumItemModel>>> {
-        return repository.getStream("")
+        return repository.getStream()
             .map {
                 when (it) {
                     State.Loading -> State.Loading

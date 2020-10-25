@@ -1,4 +1,4 @@
-package com.example.app.data.repository
+package com.example.app.data.repository.repository
 
 /**
  * List of items for storing lists in ItemListStore.

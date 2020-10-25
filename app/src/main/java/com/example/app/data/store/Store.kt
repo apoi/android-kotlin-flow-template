@@ -38,3 +38,20 @@ interface Store<in K, V> {
      */
     suspend fun delete(key: K): Boolean
 }
+
+/**
+ * Special case of Store that can only contain a single value.
+ *
+ * @param <K> Type of keys.
+ * @param <V> Type of values.
+ */
+interface SingleStore<V> {
+
+    suspend fun get(): V
+
+    fun getStream(): Flow<V>
+
+    suspend fun put(value: V): Boolean
+
+    suspend fun delete(): Boolean
+}

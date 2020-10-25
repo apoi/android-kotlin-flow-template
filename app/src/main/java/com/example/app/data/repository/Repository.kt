@@ -76,3 +76,44 @@ abstract class Repository<in K, V> {
 
     protected abstract suspend fun fetchRemote(key: K): ApiResult<V>
 }
+
+/**
+ * Special case of Repository that can only contain a single value.
+ */
+abstract class SingleRepository<V> {
+
+    private val repository = object : Repository<Int, V>() {
+
+        override suspend fun persist(value: V) {
+            return this@SingleRepository.persist(value)
+        }
+
+        override suspend fun getLocal(key: Int): V? {
+            return this@SingleRepository.getLocal()
+        }
+
+        override fun getLocalStream(key: Int): Flow<V> {
+            return this@SingleRepository.getLocalStream()
+        }
+
+        override suspend fun fetchRemote(key: Int): ApiResult<V> {
+            return this@SingleRepository.fetchRemote()
+        }
+    }
+
+    suspend fun get(): State<V> {
+        return repository.get(0)
+    }
+
+    fun getStream(validator: Validator<V> = Accept()): Flow<State<V>> {
+        return repository.getStream(0, validator)
+    }
+
+    protected abstract suspend fun persist(value: V)
+
+    protected abstract suspend fun getLocal(): V?
+
+    protected abstract fun getLocalStream(): Flow<V>
+
+    protected abstract suspend fun fetchRemote(): ApiResult<V>
+}
