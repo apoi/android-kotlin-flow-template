@@ -3,8 +3,11 @@ package com.example.app.data.store.store
 import com.example.app.data.repository.ItemList
 import com.example.app.data.store.SingleStore
 import com.example.app.data.store.StoreCore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 /**
  * Store for lists of items. Keeps index of the items in one core, and items themselves in another
@@ -22,15 +25,18 @@ open class ItemListStore<I, K, V : Any>(
 ) : SingleStore<List<V>, List<V>> {
 
     override suspend fun get(): List<V> {
-        return indexCore.get(indexKey)?.values
-            ?.let { valueCore.get(it) }
-            ?: emptyList()
+        return withContext(Dispatchers.IO) {
+            indexCore.get(indexKey)?.values
+                ?.let { valueCore.get(it) }
+                ?: emptyList()
+        }
     }
 
     override fun getStream(): Flow<List<V>> {
         return indexCore.getStream(indexKey)
             .map { index -> index.values }
             .map(valueCore::get)
+            .flowOn(Dispatchers.IO)
     }
 
     /**
@@ -38,15 +44,17 @@ open class ItemListStore<I, K, V : Any>(
      */
     @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
     override suspend fun put(values: List<V>): Boolean {
-        // Put values first in case there's a listener for the index. This way values
-        // already exist for any listeners to query.
-        val newValues = values
-            .map { value -> Pair(getKey(value), value) }
-            .let { items -> valueCore.put(items.toMap()) }
+        return withContext(Dispatchers.IO) {
+            // Put values first in case there's a listener for the index. This way values
+            // already exist for any listeners to query.
+            val newValues = values
+                .map { value -> Pair(getKey(value), value) }
+                .let { items -> valueCore.put(items.toMap()) }
 
-        val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(getKey)))
+            val indexChanged = indexCore.put(indexKey, ItemList(indexKey, values.map(getKey)))
 
-        return newValues.isNotEmpty() || indexChanged != null
+            newValues.isNotEmpty() || indexChanged != null
+        }
     }
 
     /**
@@ -54,6 +62,8 @@ open class ItemListStore<I, K, V : Any>(
      * as they may be referenced in other indexes.
      */
     override suspend fun delete(): Boolean {
-        return indexCore.delete(indexKey)
+        return withContext(Dispatchers.IO) {
+            indexCore.delete(indexKey)
+        }
     }
 }

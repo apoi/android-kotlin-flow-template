@@ -2,7 +2,10 @@ package com.example.app.data.store.store
 
 import com.example.app.data.store.Store
 import com.example.app.data.store.StoreCore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 
 /**
  * Default implementation of a store.
@@ -16,18 +19,25 @@ open class DefaultStore<in K, V>(
 ) : Store<K, V> {
 
     override suspend fun get(key: K): V? {
-        return core.get(key)
+        return withContext(Dispatchers.IO) {
+            core.get(key)
+        }
     }
 
     override fun getStream(key: K): Flow<V> {
         return core.getStream(key)
+            .flowOn(Dispatchers.IO)
     }
 
     override suspend fun put(value: V): Boolean {
-        return core.put(getKey(value), value) != null
+        return withContext(Dispatchers.IO) {
+            core.put(getKey(value), value) != null
+        }
     }
 
     override suspend fun delete(key: K): Boolean {
-        return core.delete(key)
+        return withContext(Dispatchers.IO) {
+            core.delete(key)
+        }
     }
 }

@@ -2,11 +2,14 @@ package com.example.app.data.repository
 
 import com.example.app.data.state.State
 import com.example.app.network.result.ApiResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 /**
  * Repository binds [Store] and [Api] together to a data source that handles
@@ -18,9 +21,11 @@ abstract class Repository<in K, V> {
      * Returns the current state without fetching.
      */
     suspend fun get(key: K): State<V> {
-        return getLocal(key)
-            ?.let { State.Success(it) }
-            ?: State.Empty
+        return withContext(Dispatchers.IO) {
+            getLocal(key)
+                ?.let { State.Success(it) }
+                ?: State.Empty
+        }
     }
 
     /**
@@ -60,7 +65,7 @@ abstract class Repository<in K, V> {
                     .filter { validator.validate(it) }
                     .map { State.Success(it) }
             )
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
     protected abstract suspend fun persist(value: V)
