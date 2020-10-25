@@ -8,6 +8,16 @@ plugins {
     id(Plugins.Id.Version) version Versions.Plugin.Version
 }
 
+buildscript {
+    repositories {
+        google()
+    }
+
+    dependencies {
+        classpath(Libraries.AndroidX.Navigation.SafeArgs)
+    }
+}
+
 allprojects {
     repositories {
         google()

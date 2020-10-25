@@ -5,6 +5,8 @@
     android:id="@+id/simple_album"
     app:startDestination="@id/simple_album_fragment">
 
+    <include app:graph="@navigation/details_nav" />
+
     <fragment
         android:id="@+id/simple_album_fragment"
         android:name="com.example.app.feature.album.simple.AlbumFragment"
@@ -12,15 +14,20 @@
         tools:layout="@layout/album_fragment">
 
         <action
-            android:id="@+id/simple_album_to_details"
-            app:destination="@id/simple_details_fragment" />
+            android:id="@+id/to_details"
+            app:destination="@id/details_nav">
+
+            <argument
+                android:name="id"
+                app:argType="integer" />
+
+            <argument
+                android:name="fullscreen"
+                android:defaultValue="true"
+                app:argType="boolean" />
+
+        </action>
 
     </fragment>
-
-    <fragment
-        android:id="@+id/simple_details_fragment"
-        android:name="com.example.app.feature.details.DetailsFragment"
-        android:label="@string/details_title"
-        tools:layout="@layout/details_fragment" />
 
 </navigation>

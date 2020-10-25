@@ -2,7 +2,6 @@ package com.example.app.feature.album.simple
 
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
@@ -10,7 +9,6 @@ import com.example.app.data.state.State
 import com.example.app.databinding.AlbumFragmentBinding
 import com.example.app.feature.album.simple.adapter.AlbumItemModel
 import com.example.app.feature.album.simple.adapter.AlbumTypeFactory
-import com.example.app.navigation.NavParams
 import com.example.app.ui.DividerDecoration
 import com.example.app.ui.adapter.simple.ListAdapter
 import com.example.app.ui.base.BaseFragment
@@ -51,19 +49,14 @@ class AlbumFragment : BaseFragment(R.layout.album_fragment) {
             when (it) {
                 State.Loading -> Unit
                 is State.Success -> photoAdapter.setItems(it.value)
+                is State.Empty -> photoAdapter.setItems(emptyList())
                 is State.Error -> Unit
             }
         }
     }
 
     private fun onItemSelected(photo: AlbumItemModel) {
-        findNavController()
-            .navigate(
-                R.id.simple_album_to_details,
-                bundleOf(
-                    NavParams.ID to photo.id,
-                    NavParams.FULLSCREEN to true
-                )
-            )
+        val action = AlbumFragmentDirections.toDetails(photo.id)
+        findNavController().navigate(action)
     }
 }

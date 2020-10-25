@@ -5,6 +5,8 @@
     android:id="@+id/lazy_album"
     app:startDestination="@id/lazy_album_fragment">
 
+    <include app:graph="@navigation/details_nav" />
+
     <fragment
         android:id="@+id/lazy_album_fragment"
         android:name="com.example.app.feature.album.lazy.LazyAlbumFragment"
@@ -12,15 +14,21 @@
         tools:layout="@layout/album_fragment">
 
         <action
-            android:id="@+id/lazy_album_to_details"
-            app:destination="@id/lazy_details_fragment" />
+            android:id="@+id/to_details"
+            app:destination="@id/details_nav">
+
+            <!-- Workaround for bug https://issuetracker.google.com/issues/109505019 -->
+            <argument
+                android:name="id"
+                app:argType="integer" />
+
+            <argument
+                android:name="fullscreen"
+                android:defaultValue="true"
+                app:argType="boolean" />
+
+        </action>
 
     </fragment>
-
-    <fragment
-        android:id="@+id/lazy_details_fragment"
-        android:name="com.example.app.feature.details.DetailsFragment"
-        android:label="@string/details_title"
-        tools:layout="@layout/details_fragment" />
 
 </navigation>

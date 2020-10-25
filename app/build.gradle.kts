@@ -2,7 +2,8 @@ plugins {
     id(Plugins.Id.Android.Application)
     kotlin(Plugins.Id.Kotlin.Android)
     kotlin(Plugins.Id.Kotlin.AndroidExtensions)
-    id(Plugins.Id.Kotlin.Kapt)
+    kotlin(Plugins.Id.Kotlin.Kapt)
+    id(Plugins.Id.SafeArgs)
 }
 
 android {

@@ -9,7 +9,7 @@ object Plugins {
         object Kotlin {
             const val Android = "android"
             const val AndroidExtensions = "android.extensions"
-            const val Kapt = "kotlin-kapt"
+            const val Kapt = "kapt"
         }
 
         object Android {
@@ -20,6 +20,7 @@ object Plugins {
         const val Detekt = "io.gitlab.arturbosch.detekt"
         const val Ktlint = "org.jlleitschuh.gradle.ktlint"
         const val Version = "com.github.ben-manes.versions"
+        const val SafeArgs = "androidx.navigation.safeargs.kotlin"
     }
 }
 
@@ -86,6 +87,7 @@ object Libraries {
 
         object Navigation {
             const val Fragment = "androidx.navigation:navigation-fragment-ktx:${Versions.AndroidX.Navigation}"
+            const val SafeArgs = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.AndroidX.Navigation}"
             const val Ui = "androidx.navigation:navigation-ui-ktx:${Versions.AndroidX.Navigation}"
         }
 
